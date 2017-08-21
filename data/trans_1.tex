@@ -1,0 +1,158 @@
+%\documentclass[type=bachelor]{thuthesis}
+%\documentclass{article}
+%\usepackage{xeCJK}%preamble part
+%\usepackage{graphicx}
+%\usepackage{indentfirst}
+%\usepackage{enumerate}
+%\usepackage[a4paper, inner=1.5cm, outer=3cm, top=2cm, bottom=3cm, bindingoffset=1cm]{geometry}
+%\usepackage{epstopdf}
+%\usepackage{listings}
+%\usepackage{array}
+%\usepackage{fontspec}
+%\usepackage{bm}
+%\usepackage{gensymb}
+%\usepackage{todonotes}
+%\usepackage{amsmath, amstheorem, amssymb}
+%\usepackage[citecolor=blue]{hyperref}
+%\newtheorem{definition}{Definition}
+%%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{corollary}{Corollary}
+%\newtheorem{lem}{Lemma}
+%\newtheorem{remark}{Remark}
+%\DeclareMathOperator{\sgn}{sgn}
+%\theoremstyle{remark}
+%\newtheorem*{rem}{Remark}
+%\setCJKmainfont[BoldFont={SimHei}]{SimSun}
+%\setCJKmonofont{SimSun}
+%\setmainfont{Times New Roman}
+%\newCJKfontfamily[hei]\heiti{SimHei}
+%\setlength{\extrarowheight}{4pt}
+%\setlength{\parindent}{1cm}
+%
+%\pagenumbering{arabic} 
+%\begin{document}
+%\setcounter{page}{40}
+%\title{协作定位中的信息耦合} 
+%\author{\fontsize{12pt}{\baselineskip}{沈渊,清华大学电子工程系副教授}}
+%\maketitle
+%\begin{appendix}
+\chapter{外文资料的调研阅读报告或书面翻译}
+\title{第一篇--协作定位中的信息耦合$^{[1]}$}
+\textbf{摘要}:
+%第一篇论文翻译，原文的题目是
+%Information Coupling in Cooperative Localization
+%,原文的摘要翻译如下:
+不依赖环境的高精度协作定位网络能有一系列的重要的应用。但是现有的分布式协作定位算法没有考虑到预测节点位置彼此之间的相关性。这篇文章通过费舍尔信息量的度量研究了协作定位网络的相关性问题，产生了信息耦合这个概念。为了描述这个特性，我们重点关注了最简单的非平凡情形并且推导出了信息耦合的表达式。
+\section{符号约定}
+$\text{tr}{\bm{A}},\text{adj}{\bm{A}}$和$
+|\bm{A}|$分布表示方阵A的迹，伴随矩阵和行列式。
+$[\cdot]^T$表示变量的转置；$\mathbb{S}^2,\mathbb{S}^2_+,\mathbb{S}^2_{++}$分别表示$2\times 2$的实矩阵、半正定矩阵和正定矩阵。另外$\angle \{ \bm{u},\bm{v}\}
+$表示向量$\bm{u}$和向量$\bm{v}$之间的夹角。
+\section{协作定位中的联合估计}
+考虑一个有$\mathcal{N}_a$个移动节点和$\mathcal{N}_b$个移动节点的协作定位网络，锚点的位置已知${\bm{p}_j:j \in \mathcal{N}_b}$,并且移动节点尝试通过和邻居节点的测距和通信确定它们自己的位置${\bm{p}_k: k \in \mathcal{N}_a}$。
+在文献[2]确定的测距信息是FIM的基本组成模块，这种测距信息描述了关于从测量中获得的距离信息的强度和方向。
+\begin{definition}
+在节点k和j之间的总的测距信息强度(RII)定义为关于从它们之间的距离测量中得到的距离$d_{k,j}=||\bm{p}_k-\bm{p}_j||$的费舍尔信息量。
+\end{definition}
+\begin{definition}
+设$\bm{u}_{i_1,i_2}$为从节点$i_1$到节点$i_2$的单位方向向量。定义$\bm{C}^{n,m}_{k,j}$是关于$k,j,n,m \in \mathcal{N}_a \cup \mathcal{N}_b$矩阵:
+\[
+\bm{C}^{n,m}_{k,j} \triangleq \frac{\bm{u}_{k,j}\bm{u}_{n,m}^T+\bm{u}_{n,m}\bm{u}_{k,j}^T}{2} \in \mathbb{S}^2
+\]
+另外，定义
+\[
+\mathring{\bm{C}}^{n,m}_{k,j} \triangleq \frac{\mathring{\bm{u}}_{k,j}\mathring{\bm{u}}_{n,m}^T+\mathring{\bm{u}}_{n,m}\mathring{\bm{u}}_{k,j}^T}{2} \in \mathbb{S}^2
+\]
+\end{definition}
+
+其中$\mathring{\bm{u}}_{i_1,i_2}$为逆时针方向上垂直于$\bm{u}_{i_1,i_2}$的单位向量，另外，为记号上的简便，$\bm{C}_{k,j}=\bm{C}^{k,j}_{k,j} \in \mathbb{S}^2_+$。
+EFIM的概念[6]让我们能直接通过Schur补的方法从FIM中推导对于参数向量的一个子集的信息不等式。由于在已知移动节点位置的条件下测距彼此之间相互独立，对于移动节点位置的EFIM可以写成闭式解的形式。用求导的链式法则可以证明，对于协作定位这种EFIM是下面分块矩阵的形式:
+\begin{equation}\label{eq:FIM}
+\bm{J}_e=\left[\begin{array}{cccc}
+\bm{K}_1^{\mathcal{N}_a \backslash \{1\}} & -\zeta_{1,2} \bm{C}_{1,2} &\cdots & -\zeta_{1,N_a} \bm{C}_{1,N_a} \\
+-\zeta_{1,2} \bm{C}_{1,2} &\bm{K}_2^{\mathcal{N}_a \backslash \{2\}} & \cdots & -\zeta_{2,N_a} \bm{C}_{2,N_a} \\
+\vdots & \vdots & \ddots & \vdots\\
+-\zeta_{1,N_a} \bm{C}_{1,N_a} & -\zeta_{2,N_a} \bm{C}_{2,N_a} & \cdots & \bm{K}_2^{\mathcal{N}_a \backslash \{N_a\}}\\
+\end{array}
+\right]
+\end{equation}
+其中$\mathcal{N}_a=\{1,2 \dotsc N_a\}$,对于$k,j \in \mathcal{N}_a,\zeta_{k,j}$是节点k和节点j总的RII,并且
+\[
+\bm{K}^{\mathcal{N}}_k=\bm{J}^{\mathcal{N}_b}_k+\sum_{j\in \mathcal{N}} \zeta_{k,j} \bm{C}_{k,j}, \mathcal{N} \subset \mathcal{N}_a
+\]
+上式中$\bm{J}^{\mathcal{N}_b}_k$表示仅从和$\mathcal{N}_b$测距中获得的关于第k个节点的EFIM。
+\begin{remark}
+对于式(\ref{eq:FIM})中表示协作定位的EFIM不是对角矩阵，反映了从达到CRLB的位置估计量推断中的移动节点间位置信息是相关的。这种情况阻碍了针对协作定位的最优或次优的分布式算法的设计。%development->设计?
+因此在接下来的分析中我们会探究由于非对角结构引起的信息耦合的表现。
+\end{remark}
+\section{信息耦合}
+为获得信息耦合的洞见，我们考虑一个含有$\mathcal{N}_b$个移动节点和三个协作节点的网络:$\mathcal{N}_a=\{1,2,3\}$，这代表了一个最简单的非平凡的信息耦合的情形。下面我们推导每一个移动节点的EFIM和它的逆的闭式解。
+\begin{definition}
+给定$\zeta_{k,j} \in (0,\infty)$和$\bm{J} \in \mathbb{S}^2_{++}$。定义$\Phi_{k,j}(\bm{J})$是如下形式的商：
+\[
+\Phi_{k,j}(\bm{J})\triangleq=\frac{|\bm{J}|}{|\bm{J}+\zeta_{k,j}\bm{C}_{k,j}|}\in (0,1).
+\]
+\end{definition}
+\begin{remark}
+注意到$\forall \bm{J} \in \mathcal{S}^2_{++},\lim_{\zeta_{k,j} \rightarrow 0}\Phi_{k,j}=1$并且$\lim_{\zeta_{k,j} \rightarrow \infty}\Phi_{k,j}=0$.此外，$\forall \zeta_{k,j} \in (0,\infty)$,$\lim_{|\bm{J}|\rightarrow 0}\Phi_{k,j}=0$并且$\lim_{|\bm{J}|\rightarrow \infty}\Phi_{k,j}=1.$又因为$|\bm{J}+\zeta_{k,j}|=|\bm{J}|+\zeta_{k,j}\bm{u}_{k,j}\text{adj}\{\bm{J}\}\bm{u}_{k,j},$
+\[
+\frac{\mu_2}{\mu_2+\zeta_{k,j}}\leq \Phi_{k,j}(\bm{J})\leq \frac{\mu_1}{\mu_1+\zeta_{k,j}}
+\]
+其中 $\mu_1 \geq \mu_2 \ge 0$是$\bm{J}$的两个特征根。$\Phi_{k,j}(\bm{J})$表示从节点j获得的$\zeta_{k,j}$(RII)中可以被节点k有效利用的部分，而$\bm{J}$是这个部分中的不确定性。
+\end{remark}
+\begin{theorem}
+设$\bm{J}_1^{\mathcal{N}_b},\bm{J}_2^{\mathcal{N}_b},\bm{J}_3^{\mathcal{N}_b}$分别表示仅从锚点$\mathcal{N}_b$获得的EFIM，则移动节点1的EFIM由下式给出:
+\begin{equation}
+\bm{J}_1=\bm{J}_1^{\mathcal{N}_b}+\check{\zeta}_{1,2}\bm{C}_{1,2}+\check{\zeta}_{1,3}\bm{C}_{1,3}+\kappa_{2,3}\bm{C}^{1,3}_{1,2}
+\end{equation}
+其中
+\begin{eqnarray}
+\check{\zeta}_{1,2}&=\zeta_{1,2} \cdot \Phi_{1,2}(\bm{J}_2^{\mathcal{N}_b}+\zeta_{2,3} \cdot \Phi_{2,3}(\bm{K}_3^{1})\cdot \bm{C}_{2,3})\\
+\check{\zeta}_{1,3}&=\zeta_{1,3} \cdot \Phi_{1,3}(\bm{J}_3^{\mathcal{N}_b}+\zeta_{2,3} \cdot \Phi_{2,3}(\bm{K}_2^{1})\cdot \bm{C}_{2,3})
+\end{eqnarray}
+并且$\kappa_{2,3}$由(5)式给出。
+此外，EFIM的逆为:
+\begin{equation}
+\bm{J}^{-1}=\frac{1}{|\bm{J}_1|}[\text{adj}\{\bm{J}^{\mathcal{N}_b}_1\}+\check{\zeta}_{1,2}\mathring{\bm{C}}_{1,2}+\check{\zeta}_{1,3}\mathring{\bm{C}}_{1,3}+\kappa_{2,3}\mathring{\bm{C}}_{1,2}^{1,3}]
+\end{equation}
+其中$|\bm{J}_1|$由(7)式给出。
+\end{theorem}
+\begin{remark}
+移动节点1的EFIM和它的逆都是三项的和，分别对应着从锚点、协作获取的信息以及耦合项。特别的,在(2)式中，第一项$\bm{J}_1^{\mathcal{N}_b}$是从锚点获取的信息,第二项$\check{\zeta}_{1,2}\bm{C}_{1,2}+\check{\zeta}_{1,3}\bm{C}_{1,3}$是从节点12连线和节点13连线获得的信息增量，这个增量取决于RII和由(3)式和(4)式给出的协作节点位置的不确定性。第三项$\kappa_{2,3}\bm{C}_{1,2}^{1,3}$是来自节点2和3的信息耦合项，这一项的的出现是由于节点2和3彼此之间也有协作。在描述EFIM的逆的(6)式中，三项共同的伸缩因子是行列式$|\bm{J}_1|$的倒数，并且后面的每个矩阵都是由原来的单位向量逆时针转90度再做外积得到的。
+\end{remark}
+从(5)式可以得到，$\kappa_{2,3}$的一个上界是:
+\[
+\kappa_{2,3}\leq 2\zeta_{1,2}\zeta_{1,3}\zeta_{2,3}|\bm{u}_{1,2}^T(\bm{J}_2^{\mathcal{N}_b})^{-1}\bm{C}_{2,3}(\bm{J}_3^{\mathcal{N}_b})^{-1}\bm{u}_{1,3}|
+\]
+从上式可以看出，在如下情形中没有耦合:
+\begin{enumerate}[(i)]
+\item{如果$\angle \{\bm{u}_{1,2},\bm{J}_2^{\mathcal{N}_b}\bm{u}_{2,3}\}$或者$\angle \{\bm{u}_{1,3},\bm{J}_3^{\mathcal{N}_b}\bm{u}_{2,3}\}$为90度，那么$\kappa_{2,3}=0$;}
+\item{如果移动节点2成为一个锚点，也就是$|\bm{J}_2^{\mathcal{N}_b}|$趋向于无穷大，那么$\check{\zeta_{1,2}}=\zeta_{1,2},\check{\zeta_{1,3}}=\zeta_{1,3}\cdot \Phi_{1,3}(\bm{J}_3^{\mathcal{N}_b}+\zeta_{2,3}\bm{C}_{2,3}),$并且$\kappa_{2,3}=0$;}
+\item{如果节点2和节点3之间不协作，也就是$\zeta_{2,3}=0$,那么$\check{\zeta_{1,2}}=\zeta_{1,2}\cdot \Phi_{1,2}(\bm{J}_2^{\mathcal{N}_b},\check{\zeta_{1,3}}=\zeta_{1,3}\cdot \Phi_{1,3}(\bm{J}_3^{\mathcal{N}_b}),$并且$\kappa_{2,3}=0$;}
+\end{enumerate}
+这些结果说明了当移动节点的位置满足(i)中的正交性条件或者如$(ii)$或$(iii)$给出的有少于3个节点参与协作时，不会有耦合项出现。
+\begin{corollary}
+耦合项$\kappa_{2,3}\bm{C}_{1,2}^{1,3}$有特征值$[\cos(\angle \{\bm{u}_{1,2},\bm{u}_{1,3}\})+1]\kappa_{2,3}/2$和$[\cos(\angle \{\bm{u}_{1,2},\bm{u}_{1,3}\})-1]\kappa_{2,3}/2$，分别对应的特征向量是$
+\bm{u}_{1,2}+\bm{u}_{1,3}$和$\bm{u}_{1,2}-\bm{u}_{1,3}$。
+\end{corollary}
+\begin{remark}
+这个引理说明了如果$\kappa_{2,3}>0$(对应的，如果$\kappa_{2,3}<0$)，如果忽略耦合项，由协作获得的信息椭圆在$
+\bm{u}_{1,2}+\bm{u}_{1,3}$方向上会被低估(对应的，高估)，而在$
+\bm{u}_{1,2}-\bm{u}_{1,3}$方向上会被高估(对应的，低估)。另外当角$\angle \{\bm{u}_{1,2},\bm{u}_{1,3}\}$是锐角(对应的，钝角)时，在$
+\bm{u}_{1,2}+\bm{u}_{1,3}$方向上的信息耦合会比$
+\bm{u}_{1,2}-\bm{u}_{1,3}$方向上的更显著(对应的，不如前者显著)。
+\end{remark}
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth/2]{figure_2.png}
+\caption{协作定位中的信息耦合可能会严重实际可达到的定位信息}
+\end{figure}
+
+举例说明如下，图1描述了考虑和忽略耦合项的信息椭圆的形状。在这两种类别中，从锚点获得的EFIM为简便取成$\bm{J}^{\mathcal{N}_b}_1,\bm{J}^{\mathcal{N}_b}_2,\bm{J}^{\mathcal{N}_b}_3=\text{diag}\{1,1\}$,并且三个协作节点分别位于位置$\bm{p}_1,\bm{p}_2,\bm{p}_3$.
+图1展示了节点1的真实信息椭圆$\bm{J}_1$和忽略耦合项后的信息椭圆$\bm{\tilde{J}}_1$的差别。
+%\newpage
+%\input{trans_2.tex}
+%\input{trans_3.tex}
+%\end{appendix}
+%\end{document}

@@ -1,0 +1,136 @@
+% \documentclass[10pt,conference]{IEEEtran}
+% \usepackage{xeCJK}%preamble part
+% \usepackage{graphicx}
+% \usepackage{indentfirst}
+% \usepackage{enumerate}
+% \usepackage[a4paper, inner=1.5cm, outer=3cm, top=2cm, bottom=3cm, bindingoffset=1cm]{geometry}
+% \usepackage{epstopdf}
+% \usepackage{listings}
+% \usepackage{multicol}
+% \usepackage{array}
+% \usepackage{fontspec}
+% \usepackage{bm}
+% \usepackage{gensymb}
+% \usepackage{todonotes}
+% \usepackage{amsmath, amsthm, amssymb}
+% \usepackage[citecolor=blue]{hyperref}
+% \newtheorem{definition}{Definition}
+% \newtheorem{thm}{Theorem}[section]
+% \newtheorem{thm}{Theorem}
+% \newtheorem{cor}{Corollary}
+% \newtheorem{proposition}{Proposition}
+% \newtheorem{lem}{Lemma}
+% \newtheorem{remark}{Remark}
+% \DeclareMathOperator{\sgn}{sgn}
+% \theoremstyle{remark}
+% \newtheorem*{rem}{Remark}
+% \setCJKmainfont[BoldFont={SimHei}]{SimSun}
+% \setCJKmonofont{SimSun}
+% \setmainfont{Times New Roman}
+% \newCJKfontfamily[hei]\heiti{SimHei}
+% \setlength{\extrarowheight}{4pt}
+% \setlength{\parindent}{1cm}
+ 
+% \begin{document}
+% \onecolumn
+% \title{宽带定位的理论极限--第二部分：协作网络} 
+% \author{\fontsize{12pt}{\baselineskip}{沈渊,清华大学电子工程系副教授}}
+% \maketitle
+% \begin{multicols}{2}
+% \begin{abstract}
+\title{第三篇--宽带定位的理论极限---第二部分：协作网络（节选）$^{[3]}$}
+%第三篇论文的翻译，原文的题目是
+%Fundamental Limits Of Wideband Localization--Part II: Cooperative Networks
+%由于原文较长，翻译部分只针对原文关于EFIM的一阶上下界的部分。
+%\end{abstract}
+
+
+对于每个移动节点，EFIM的准确表达式非常复杂。但是我们可以找到每个节点EFIM的上下界，从而获得对定位问题的洞见。
+
+\begin{proposition}
+设$\bm{J}_e^A(\bm{p}_k)=\bm{F}(\mu_k,\eta_k,\vartheta_k)$表示节点k从锚点获得的定位信息，$\bm{C}_{kj}=\bm{F}(\nu_{kj},0,\phi_{kj})$表示该节点和节点j协作的测距信息RI。节点k的EFIM $\bm{J}_e(\bm{p}_k)$满足如下不等式:
+\[
+\bm{J}_e^L(\bm{p}_k) \preceq \bm{J}_e(\bm{p}_k) \preceq \bm{J}_e^U(\bm{p}_k)
+\]
+其中
+\begin{eqnarray}
+\bm{J}_e^L(\bm{p}_k)=\bm{J}_e^A(\bm{p}_k)+\sum_{j\in \mathcal{N}_a \backslash {k}} \xi_{kj}^L \bm{C}_{kj}\\
+\bm{J}_e^U(\bm{p}_k)=\bm{J}_e^A(\bm{p}_k)+\sum_{j\in \mathcal{N}_a \backslash {k}} \xi_{kj}^U \bm{C}_{kj}
+\end{eqnarray}
+\end{proposition}
+%\end{multicols}
+%\hrulefill
+\begin{proof}
+不失一般性，我们假设k=1.
+
+下界:考虑EFIM$\bm{J}_e^L(\bm{P})$为:
+\begin{equation}
+\bm{J}_e^L(\bm{P})=\left[
+\begin{array}{cccc}
+\bm{J}_e^A(\bm{p}_1)+\sum_{j\in \mathcal{N}_a\backslash \{1\}}\bm{C}_{1,j}&-\bm{C}_{1,2}& \dots & -\bm{C}_{1,N_a}\\
+-\bm{C}_{1,2} &\bm{J}_e^A(\bm{p}_2)+\bm{C}_{1,2} & \dots & 0\\
+\vdots & \vdots & \ddots & \vdots\\
+-\bm{C}_{1,N_a} & 0 & \dots & \bm{J}_e^A(\bm{p}_{N_a})+\bm{C}_{1,N_a}
+\end{array}
+\right]
+\end{equation}
+%\hrulefill
+%\begin{multicols}{2}
+这个矩阵是令$\bm{J}_e(\bm{P})$中所有的$\bm{C}_{kj}=0$，对于$1\le k,j \leq N_a$.这个EFIM对应着节点2到$N_a$的协作完全被忽略。通过线性代数的指数可以证明$\bm{J}_e^L(\bm{P})\preceq \bm{J}_e^L(\bm{P})$,这也可直观相符，因为没有利用节点2到$N_a$的协作信息。利用EFI的方法，我们可以得到节点1的EFIM是:
+\begin{equation*}
+\begin{split}
+&\bm{J}_e^L(\bm{p}_1)=\bm{J}_e^A(\bm{p}_1)\\
+&+\sum_{j\in \mathcal{N}_a \backslash \{1\}}[\bm{C}_{1,j}-\bm{C}_{1,j}(\bm{J}_e^A(\bm{p}_j)+\bm{C}_{1,j})^{-1}\bm{C}_{1,j}]
+\end{split}
+\end{equation*}
+因为$\bm{C}_{1,j}=\nu_{1,j}\bm{q}_{\phi_{1,j}}\bm{q}_{\phi_{1,j}}^T$,其中$\bm{q}_{\phi_{1,j}}\triangleq=[\cos(\phi_{1,j}),\sin(\phi_{1,j})]^T$,我们可以将$\bm{J}^L_e(\bm{p}_1)$表示成:
+\begin{equation}
+\bm{J}_e^L(\bm{p}_1)=\bm{J}_e^A(\bm{p}_1)
++\sum_{j\in \mathcal{N}_a \backslash \{1\}}\xi_{1,j}^L\bm{C}_{1,j}
+\end{equation}
+其中$\xi_{1,j}^L\triangleq 1-\nu_{1,j}\bm{q}^T_{\phi_{1,j}}(\bm{J}^A_e(\bm{p}_j)+\bm{C}_{1,j})^{-1}\bm{q}_{\phi_{1,j}}$.系数$\xi_{1,j}^L$可以进一步化简为
+\begin{equation}
+\begin{split}
+\xi_{1,j}^L=&1-\nu_{1,j}\bm{q}^T_{\vartheta_j-\phi_{1,j}}\\
+&\cdot (\text{diag}\{\mu_j,\eta_j\}+\nu_{1,j}\bm{q}_{\vartheta_j-\phi_{1,j}}\bm{q}^T_{\vartheta_j-\phi_{1,j}})^{-1}\bm{q}_{\vartheta_j-\phi_{1,j}}\\
+=&\frac{1}{1+\nu_{1,j}\delta_j(\phi_{1,j})}
+\end{split}
+\end{equation}
+其中
+$$\delta_j(\phi_{1,j})=\frac{1}{\mu_j}\cos^2(\vartheta-\phi_{1,j})+\frac{1}{\eta_j}\sin^2(\vartheta-\phi_{1,j})$$
+
+上界: 考虑EFIM$\bm{J}_e^U(\bm{P})$为：
+%\end{multicols}
+%\hrulefill
+\begin{equation}
+\bm{J}_e^U(\bm{P})=\left[
+\begin{array}{cccc}
+\bm{J}_e^A(\bm{p}_1)+&-\bm{C}_{1,2}& \dots & -\bm{C}_{1,N_a}\\
+\sum_{j\in \mathcal{N}_a\backslash \{1\}}\bm{C}_{1,j}&&&\\
+-\bm{C}_{1,2} &\bm{J}_e^A(\bm{p}_2)& \dots & 0\\
+&+\bm{C}_{1,2}+\sum_{j\in \mathcal{N}_a\backslash \{1,2\}}2\bm{C}_{1,j} &&\\
+\vdots & \vdots & \ddots & \vdots\\
+-\bm{C}_{1,N_a} & 0 & \dots & \bm{J}_e^A(\bm{p}_{N_a})\\
+&&&+\sum_{j\in \mathcal{N}_a\backslash \{1\}}\bm{C}_{1,j}2\bm{C}_{1,N_a}\\
+\end{array}
+\right]
+\end{equation}
+%\hrulefill
+%\begin{multicols}{2}
+这个矩阵可以通过把$\bm{J}_e^(\bm{P})$种对角元$\bm{C}_{kj}$扩大一倍同时让非对角元$-\bm{C}_{kj}=0$，对$1\le k,j\leq N_a$.用线性代数的知识我们可以证明$\bm{J}_e^U(\bm{P}) \succeq \bm{J}_e(\bm{P})$,这也符合直观，因为节点2到$N_a$之间有了更多的协作。利用EFI的方法，我们可以得到节点1的EFIM是:
+\begin{equation*}
+\bm{J}_e^U(\bm{p}_1)=\bm{J}_e^A(\bm{p}_1)
++\sum_{j\in \mathcal{N}_a \backslash \{1\}}\xi_{1,j}^U\bm{C}_{1,j}
+\end{equation*}
+其中
+\begin{equation}
+\xi_{1,j}^U =\frac{1}{1+\nu_{1,j}\tilde{\delta}_j(\phi_{1,j})}
+\end{equation}
+而$$\tilde{\delta}_j(\phi_{1,j})=\frac{1}{\tilde{\mu}_j}\cos^2(\tilde{\vartheta}-\phi_{1,j})+\frac{1}{\tilde{\eta}_j}\sin^2(\tilde{\vartheta}-\phi_{1,j})$$
+而$\tilde{\mu}_j,\tilde{\eta}_j,\tilde{\vartheta}_j$满足:
+$$
+\bm{F}(\tilde{\mu}_j,\tilde{\eta}_j,\tilde{\vartheta}_j)=\bm{J}^A_e(\bm{p}_j)+\sum_{k\in \mathcal{N}_a\backslash \{1,j\}} 2\bm{C}_{jk}
+$$
+%\end{multicols}
+\end{proof}
+%\end{document}

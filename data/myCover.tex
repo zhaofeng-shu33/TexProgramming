@@ -1,0 +1,89 @@
+\thusetup{
+  %******************************
+  % 注意：
+  %   1. 配置里面不要出现空行
+  %   2. 不需要的配置信息可以删除
+  %******************************
+  %
+  %=====
+  % 秘级
+  %=====
+  secretlevel={秘密},
+  secretyear={10},
+  %
+  %=========
+  % 中文信息
+  %=========
+  ctitle={无线网络中定位信息的时空传播机理研究},
+  cdegree={理学学士},
+  cdepartment={数学科学系},
+  cmajor={数学与应用数学},
+  cauthor={赵丰},
+  csupervisor={沈渊\quad 副教授},
+  %cassosupervisor={梁恒\quad 副教授}, % 副指导老师
+  ccosupervisor={梁恒\quad 副教授}, % 联合指导老师
+  % 日期自动使用当前时间，若需指定按如下方式修改：
+  % cdate={超新星纪元},
+  %
+  % 博士后专有部分
+  cfirstdiscipline={计算机科学与技术},
+  cseconddiscipline={系统结构},
+  postdoctordate={2009年7月——2011年7月},
+  id={编号}, % 可以留空： id={},
+  udc={UDC}, % 可以留空
+  catalognumber={分类号}, % 可以留空
+  %
+  %=========
+  % 英文信息
+  %=========
+  etitle={An Introduction to \LaTeX{} Thesis Template of Tsinghua University v\version},
+  % 这块比较复杂，需要分情况讨论：
+  % 1. 学术型硕士
+  %    edegree：必须为Master of Arts或Master of Science（注意大小写）
+  %             “哲学、文学、历史学、法学、教育学、艺术学门类，公共管理学科
+  %              填写Master of Arts，其它填写Master of Science”
+  %    emajor：“获得一级学科授权的学科填写一级学科名称，其它填写二级学科名称”
+  % 2. 专业型硕士
+  %    edegree：“填写专业学位英文名称全称”
+  %    emajor：“工程硕士填写工程领域，其它专业学位不填写此项”
+  % 3. 学术型博士
+  %    edegree：Doctor of Philosophy（注意大小写）
+  %    emajor：“获得一级学科授权的学科填写一级学科名称，其它填写二级学科名称”
+  % 4. 专业型博士
+  %    edegree：“填写专业学位英文名称全称”
+  %    emajor：不填写此项
+  edegree={Doctor of Engineering},
+  emajor={Computer Science and Technology},
+  eauthor={Xue Ruini},
+  esupervisor={Professor Zheng Weimin},
+  eassosupervisor={Chen Wenguang},
+  % 日期自动生成，若需指定按如下方式修改：
+  % edate={December, 2005}
+  %
+  % 关键词用“英文逗号”分割
+  ckeywords={协作定位,费舍尔信息矩阵,定位误差下界,矩阵代数,连分式},
+  ekeywords={Cooperative localization, Fisher informaton matrix, Position error bound, Matrix algebra, Continued fraction}
+}
+
+% 定义中英文摘要和关键字
+\begin{cabstract}
+对于目标实时位置的获取是无线通信技术应用的重要组成部分。在多个目标节点的定位场景下，基于目标节点相互之间的距离信息的协作定位技术能够有效提高定位精度。但是协作定位网络也不可避免的存在定位误差，如何根据网络中的拓扑特点和几何参数尽可能降低定位误差是这一领域热门的研究课题。特别的，随着定位网络规模的扩大和时间上的延长，各种测量数据如何影响定位误差是本文研究的内容。
+
+  本文从高斯信号模型出发，从费舍尔信息矩阵的角度刻画了定位误差的时空衰减特性。本文主要运用了矩阵代数的运算规则推导了费舍尔信息矩阵特征值的闭式表达式，并利用函数的连分式展开的分析方法求出了定位误差的时空衰减速度的量阶，从而揭示了定位误差与协作信息的关系的一般机理。
+
+  本文在单节点时间协作问题上得出了一般情形下误差下界的连分式表达形式，并且在理论上证明了采样时间间隔趋于零时的误差下界和节点的运动轨迹无关的性质，这对于单节点路径规划与运动控制有一定的理论指导意义。
+\end{cabstract}
+
+% 如果习惯关键字跟在摘要文字后面，可以用直接命令来设置，如下：
+% \ckeywords{协作定位,费舍尔信息矩阵, 定位误差下界,矩阵代数,连分式}
+
+\begin{eabstract}
+The acquisition of real-time target position is an important part of application in wireless communication technology. For situations where positions of multiple agents are required, cooperative localization technology based on distance measure information between agents can significantly improve the localization accuracy. However, localization error is unavoidable in cooperative localization network and it is a vital topic in this field to investigate how to decrease localization error based on topological characteristics and geometrical parameter. In particular, it is the main focus of this article to make research on how the localization error is affected by distance measure information, as the scale of the network is growing and observation time is prolonging.
+
+Starting from Gaussian signal model, this article discussed the spatial-temporal decaying characteristics of localization error from the perspective of Fisher information matrix. Applying rules of matrix algebra, the closed form of eigenvalues for special Fisher information matrix is derived; With the method of continued fraction analysis, the decaying order of localization error propagation speed is derived, which shows the general mechanism of the relationship between localization error and cooperative information.
+
+In this article, general form of error bound is derived in continued fraction form for single agent temporal cooperation case, and we proved that the error bound is unrelated with trajectory of the agent as the sampling time interval tends to zero. This result could show some insights in the domain of trajectory planning and motion control of network agent.
+
+\end{eabstract}
+
+% \ekeywords{\TeX, \LaTeX, CJK, template, thesis}
