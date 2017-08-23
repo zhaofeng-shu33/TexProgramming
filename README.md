@@ -6,3 +6,4 @@ run "xelatex myMain.tex" from command line.
 
 # Dependency
 [ThuThesis](https://github.com/xueruini/thuthesis)
+

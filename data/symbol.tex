@@ -1,0 +1,78 @@
+\documentclass{article}% a book has chapters but an article doesn't
+\usepackage{bookmark}
+\usepackage{ifthen}
+\usepackage{xparse}
+\usepackage{enumitem}
+\usepackage{xeCJK}
+\usepackage{bm}
+\begin{document}
+\makeatletter
+\newcommand{\thu@denotation@name}{Main Symbol Table}
+\newcounter{thu@bookmark}
+\NewDocumentCommand\thu@chapter{s o m o}{
+  \IfBooleanF{#1}{%
+    \ClassError{thuthesis}{You have to use the star form: \string\thu@chapter*}{}
+  }%
+  %\if@openright\cleardoublepage\else\clearpage\fi\phantomsection%
+  \IfValueTF{#2}{%
+    \ifthenelse{\equal{#2}{}}{%
+      \addtocounter{thu@bookmark}\@ne
+      \pdfbookmark[0]{#3}{thuchapter.\thethu@bookmark}
+    }{%
+      \addcontentsline{toc}{chapter}{#3}
+    }
+  }{%
+    \addcontentsline{toc}{chapter}{#3}
+  }%
+  \section*{#3}%
+  \IfValueTF{#4}{%
+    \ifthenelse{\equal{#4}{}}
+    {\@mkboth{}{}}
+    {\@mkboth{#4}{#4}}
+  }{%
+    \@mkboth{#3}{#3}
+  }
+}
+
+\newlist{thu@denotation}{description}{1}
+\setlist[thu@denotation]
+{%
+  nosep,
+  font=\normalfont,
+  align=left,
+  leftmargin=!, % sum of the following 3 lengths
+  labelindent=0pt,
+  labelwidth=2.5cm,
+  labelsep*=0.5cm,
+  itemindent=0pt,
+}
+\newenvironment{denotation}[1][2.5cm]
+{
+  \thu@chapter*[]{\thu@denotation@name} % no tocline
+  \vskip-30bp
+\begin{thu@denotation}[labelwidth=#1]
+}
+{
+  \end{thu@denotation}
+}
+\makeatother
+
+\begin{denotation}[3cm]
+\item[$N_b$] 锚点数量
+\item[$\bm{A}^{\mathrm{T}}$] 矩阵$\bm{A}$的转置
+\item[$\bm{p}_i$] 第i个待定位节点的位置，在时间协作中表示目标节点各个时刻的位置
+\item[$\bm{P}$] 全部要估计的待定位节点的位置向量，即$(\bm{p}_1,\bm{p}_2,\dots,\bm{p}_{N_a})$
+\item[$\bm{p}^b_i$] 第i个锚点的位置
+\item[$f(x_1,\dots,x_n|\theta)$] 参数$\theta$已知条件下随机变量$X_1,\dots,X_n$联合概率密度函数
+\item[$\bm{J}(\bm{p})$] 关于待定位节点位置$\bm{p}$的费舍尔信息矩阵
+\item[$N_a$] 待定位节点数量
+\item[$\bm{u}_{i,j}$] 节点i和节点j之间的单位方向向量，时间协作中表示采样时刻$t_i$和$t_j$之间目标节点的位置变化向量
+\item[$\bm{C}_{i,j}$] 费舍尔信息矩阵位于i行j列的元素的相反数
+\item[$\lambda_{i,j}$] 节点$i,j$之间的 RII
+\item[$\bm{u}_{i,j}$] 节点$i,j$之间的单位方向向量,时间协作中表示某节点第$i$个时刻的位置和第$j(j=i+1)$个时刻的位置之间的单位方向向量
+\item[$\phi_{i,j}$] $\bm{u}_{i,j}$的方向角
+\item[$\bm{A}^{-1}_{1\times2,1\times2}$] 方阵$\bm{A}$的逆阵的取前两行和前两列决定的子矩阵
+\end{denotation}
+
+
+\end{document}
