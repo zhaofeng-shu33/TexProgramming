@@ -1,0 +1,212 @@
+%!TEX program = xelatex
+\documentclass[a4paper,11pt]{article}
+\usepackage{fontspec, xunicode, xltxtra,paralist,amsmath,esint,color,amssymb,graphicx,float,array,booktabs,appendix,indentfirst,cases,bm}
+\usepackage{algorithm,algorithmic}
+\usepackage{galois}
+\usepackage{amsthm}
+\usepackage{xeCJK}
+\usepackage{bm}
+\usepackage[a4paper, inner=1cm, outer=1.5cm, top=2cm,bottom=3cm, bindingoffset=1cm]{geometry}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\V[1]{\mathrm{\bf{#1}}}
+\newcommand\Tx[1]{\mathrm{#1}}
+\newcommand\Se[1]{\mathcal{#1}}
+\newcommand\Db[1]{\mathbb{#1}}
+\newcommand{\RN}[1]{\textup{\uppercase\expandafter{\romannumeral#1}}}
+\newcommand\Ept[1]{\Db{E}\left[ #1 \right]}
+\newcommand\Sma[2]{\sum\limits_{#1}^{#2}}
+\newcommand\Prd[2]{\prod\limits_{#1}^{#2}}
+\newcommand\Bop[2]{\bigoplus\limits_{#1}^{#2}}
+\newcommand\Nm[1]{\lvert\lvert #1\rvert\rvert}
+\newcommand\MB[1]{\left[#1\right]}
+\newcommand\LB[1]{\{#1\}}
+\newcommand\SB[1]{\left(#1\right)}
+\newcommand\Prob[1]{\Tx{Pr}{\MB{#1}}}
+\newcommand\PR[2]{\Tx{Pr}_{#1}{\MB{#2}}}
+\newcommand\Var[1]{\Tx{Var}\MB{#1}}
+\newcommand\Tc[1]{\textcircled{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtheorem{theo}{Theorem}
+\newtheorem{coro}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{exam}{Example}
+\newtheorem{Defi}{Definition}
+\newtheorem{rem}{Remark}
+\renewcommand\qedsymbol{Q.E.D.}
+
+\begin{document}
+\title{毕设论文定理2.5及推论2.1证明修订}
+\author{Siyi Yang}
+\maketitle
+
+\section{定理2.4证明}
+
+原论文FIM矩阵最后一行最后一个元素打印错误，修改如下：
+\begin{equation}
+\begin{split}
+\V{J}_{\Tx{e}}(\V{P},k)=
+\begin{pmatrix}
+\bm{\Sigma}_{0}+\V{B}_{0}\V{B}^H_{0} & -\V{B}_{0}\V{F}^H_{1} & & & \\
+ -\V{F}_{1}\V{B}^H_{0}  &  \bm{\Sigma}_{1}+\V{B}_{1}\V{B}^H_{1}+\V{F}_{1}\V{F}^H_{1} & -\V{B}_{1}\V{F}^H_{2} & &\\
+ & -\V{F}_{2}\V{B}^H_{1}  &  \bm{\Sigma}_{2}+\V{B}_{2}\V{B}^H_{2}+\V{F}_{2}\V{F}^H_{2} & &\\
+ &&&\ddots&\\
+ &&&& \textcolor{red}{\bm{\Sigma}_{k}+\V{F}_{k}\V{F}^H_{k}}
+\end{pmatrix}.
+\end{split}
+\end{equation}
+其余证明不变。
+
+\section{定理2.5证明}
+根据定理2.4结论：
+
+\begin{equation}
+\begin{split}
+\Se{J}(k)=&\Tx{tr}\{\bm{\Sigma}_{0}^{-1}\V{B}_{0}\SB{\V{I}+\V{B}_{0}^H\bm{\Lambda}_0^{-1}\V{B}_{0}+\V{F}_{1}^H\bm{\Sigma}_{1}^{-1}\V{F}_{1}}^{-1}\V{F}_{1}^H\\
+&\bm{\Sigma}_{1}^{-1}\V{B}_{1}\SB{\V{I}+\V{B}_{1}^H\bm{\Lambda}_{1}^{-1}\V{B}_{1}+\V{F}_{2}^H\bm{\Sigma}_{2}^{-1}\V{F}_{2}}^{-1}\V{F}_{2}^H\cdots\\
+&\bm{\Sigma}_{k-1}^{-1}\V{B}_{k-1}\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H\bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1}\V{B}_{k-1}^H\bm{\Sigma}_{k-1}^{-1}\\
+&\cdots \V{F}_{2}\SB{\V{I}+\V{B}_{1}^H\bm{\Lambda}_{1}^{-1}\V{B}_{1}+\V{F}_{2}^H\bm{\Sigma}_{2}^{-1}\V{F}_{2}}^{-1}\V{B}_{1}^H\bm{\Sigma}_{1}^{-1}\\
+&\V{F}_{1}\SB{\V{I}+\V{B}_{0}^H\bm{\Lambda}_0^{-1}\V{B}_{0}+\V{F}_{1}^H\bm{\Sigma}_{1}^{-1}\V{F}_{1}}^{-1}\V{B}_{0}^H\bm{\Sigma}_{0}^{-1}\}.
+\end{split}
+\label{Jek}
+\end{equation}
+
+
+第$k$层网络中去掉边$e$时(\ref{Jek})中$\bm{\Sigma}_{k,2}$为$\bm{\Sigma}_k$, 保留边$e$时变为$\bm{\Sigma}_{k,1}=\bm{\Sigma}_k+\V{a}\V{a}^H$ ($\V{a}=\V{a}_{i,j}$). 根据定理2.4中$\bm{\Lambda}_k$的递推式，$\bm{\Sigma}_k$对(\ref{Jek})中其它值不产生影响。
+
+\begin{equation}
+\begin{split}
+\Se{J}_1=&\Tx{tr}\{\bm{\Sigma}_{0}^{-1}\V{B}_{0}\SB{\V{I}+\V{B}_{0}^H\bm{\Lambda}_0^{-1}\V{B}_{0}+\V{F}_{1}^H\bm{\Sigma}_{1}^{-1}\V{F}_{1}}^{-1}\V{F}_{1}^H\\
+&\bm{\Sigma}_{1}^{-1}\V{B}_{1}\SB{\V{I}+\V{B}_{1}^H\bm{\Lambda}_{1}^{-1}\V{B}_{1}+\V{F}_{2}^H\bm{\Sigma}_{2}^{-1}\V{F}_{2}}^{-1}\V{F}_{2}^H\cdots\\
+&\bm{\Sigma}_{k-1}^{-1}\V{B}_{k-1}\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H\textcolor{red}{\SB{\bm{\Sigma}_{k}+\V{a}\V{a}^H}^{-1}}\V{F}_{k}}^{-1}\V{B}_{k-1}^H\bm{\Sigma}_{k-1}^{-1}\\
+&\cdots \V{F}_{2}\SB{\V{I}+\V{B}_{1}^H\bm{\Lambda}_{1}^{-1}\V{B}_{1}+\V{F}_{2}^H\bm{\Sigma}_{2}^{-1}\V{F}_{2}}^{-1}\V{B}_{1}^H\bm{\Sigma}_{1}^{-1}\\
+&\V{F}_{1}\SB{\V{I}+\V{B}_{0}^H\bm{\Lambda}_0^{-1}\V{B}_{0}+\V{F}_{1}^H\bm{\Sigma}_{1}^{-1}\V{F}_{1}}^{-1}\V{B}_{0}^H\bm{\Sigma}_{0}^{-1}\}.
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\Se{J}_2=&\Tx{tr}\{\bm{\Sigma}_{0}^{-1}\V{B}_{0}\SB{\V{I}+\V{B}_{0}^H\bm{\Lambda}_0^{-1}\V{B}_{0}+\V{F}_{1}^H\bm{\Sigma}_{1}^{-1}\V{F}_{1}}^{-1}\V{F}_{1}^H\\
+&\bm{\Sigma}_{1}^{-1}\V{B}_{1}\SB{\V{I}+\V{B}_{1}^H\bm{\Lambda}_{1}^{-1}\V{B}_{1}+\V{F}_{2}^H\bm{\Sigma}_{2}^{-1}\V{F}_{2}}^{-1}\V{F}_{2}^H\cdots\\
+&\bm{\Sigma}_{k-1}^{-1}\V{B}_{k-1}\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H\textcolor{red}{\bm{\Sigma}_{k}^{-1}}\V{F}_{k}}^{-1}\V{B}_{k-1}^H\bm{\Sigma}_{k-1}^{-1}\\
+&\cdots \V{F}_{2}\SB{\V{I}+\V{B}_{1}^H\bm{\Lambda}_{1}^{-1}\V{B}_{1}+\V{F}_{2}^H\bm{\Sigma}_{2}^{-1}\V{F}_{2}}^{-1}\V{B}_{1}^H\bm{\Sigma}_{1}^{-1}\\
+&\V{F}_{1}\SB{\V{I}+\V{B}_{0}^H\bm{\Lambda}_0^{-1}\V{B}_{0}+\V{F}_{1}^H\bm{\Sigma}_{1}^{-1}\V{F}_{1}}^{-1}\V{B}_{0}^H\bm{\Sigma}_{0}^{-1}\}.
+\end{split}
+\end{equation}
+
+根据以上二式，
+
+\begin{equation}
+\begin{split}
+&\Se{J}^{\Tx{SL}}(e,k)\\
+=&\Se{J}_1-\Se{J}_2\\
+=&\Tx{tr}\{\bm{\Sigma}_{0}^{-1}\V{B}_{0}\SB{\V{I}+\V{B}_{0}^H\bm{\Lambda}_0^{-1}\V{B}_{0}+\V{F}_{1}^H\bm{\Sigma}_{1}^{-1}\V{F}_{1}}^{-1}\V{F}_{1}^H\\
+&\bm{\Sigma}_{1}^{-1}\V{B}_{1}\SB{\V{I}+\V{B}_{1}^H\bm{\Lambda}_{1}^{-1}\V{B}_{1}+\V{F}_{2}^H\bm{\Sigma}_{2}^{-1}\V{F}_{2}}^{-1}\V{F}_{2}^H\cdots\\
+&\bm{\Sigma}_{k-1}^{-1}\V{B}_{k-1}\{\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H\textcolor{red}{\SB{\bm{\Sigma}_{k}+\V{a}\V{a}^H}^{-1}}\V{F}_{k}}^{-1}\\
+&-\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H\textcolor{red}{\bm{\Sigma}_{k}^{-1}}\V{F}_{k}}^{-1}\}\V{B}_{k-1}^H\bm{\Sigma}_{k-1}^{-1}\\
+&\cdots \V{F}_{2}\SB{\V{I}+\V{B}_{1}^H\bm{\Lambda}_{1}^{-1}\V{B}_{1}+\V{F}_{2}^H\bm{\Sigma}_{2}^{-1}\V{F}_{2}}^{-1}\V{B}_{1}^H\bm{\Sigma}_{1}^{-1}\\
+&\V{F}_{1}\SB{\V{I}+\V{B}_{0}^H\bm{\Lambda}_0^{-1}\V{B}_{0}+\V{F}_{1}^H\bm{\Sigma}_{1}^{-1}\V{F}_{1}}^{-1}\V{B}_{0}^H\bm{\Sigma}_{0}^{-1}\}.\\
+\end{split}
+\label{JSL}
+\end{equation}
+
+
+\begin{equation}
+\begin{split}
+&\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H\textcolor{red}{\SB{\bm{\Sigma}_{k}+\V{a}\V{a}^H}^{-1}}\V{F}_{k}}^{-1}\\
+=&\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H\textcolor{red}{\SB{\bm{\Sigma}_{k}^{-1} - \bm{\Sigma}_{k}^{-1} \V{a}\SB{\V{I}+\V{a}^H \bm{\Sigma}_{k}^{-1}  \V{a}}^{-1} \V{a}^H\bm{\Sigma}_{k}^{-1} }}\V{F}_{k}}^{-1}\\
+=&\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k} -\textcolor{red}{\V{F}_{k}^H\bm{\Sigma}_{k}^{-1} \V{a}\SB{\V{I}+\V{a}^H \bm{\Sigma}_{k}^{-1}  \V{a}}^{-1} \V{a}^H\bm{\Sigma}_{k}^{-1} \V{F}_{k}}}^{-1}\\
+=&\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1}\\
+&+\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1}\V{F}_{k}^H\bm{\Sigma}_{k}^{-1} \V{a}\\
+&\SB{1+\V{a}^H \bm{\Sigma}_{k}^{-1}\V{a}-\V{a}^H\bm{\Sigma}_{k}^{-1} \V{F}_{k}\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1} \V{F}_{k}^H\bm{\Sigma}_{k}^{-1} \V{a} }^{-1} \\
+&\V{a}^H\bm{\Sigma}_{k}^{-1} \V{F}_{k}\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1}\\
+=&\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1}\\
+&+\SB{1+\V{a}^H \bm{\Sigma}_{k}^{-1}\V{a}-\V{a}^H\bm{\Sigma}_{k}^{-1} \V{F}_{k}\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1} \V{F}_{k}^H\bm{\Sigma}_{k}^{-1} \V{a} }^{-1} \\
+&\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1}\V{F}_{k}^H\bm{\Sigma}_{k}^{-1} \V{a}\V{a}^H\bm{\Sigma}_{k}^{-1} \V{F}_{k}\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1}.\\
+\end{split}
+\end{equation}
+
+代入(\ref{JSL})中得：
+
+\begin{equation}
+\begin{split}
+&\Se{J}^{\Tx{SL}}(e,k)\\
+=&\textcolor{red}{\SB{1+\V{a}^H \bm{\Sigma}_{k}^{-1}\V{a}-\V{a}^H\bm{\Sigma}_{k}^{-1} \V{F}_{k}\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1} \V{F}_{k}^H\bm{\Sigma}_{k}^{-1} \V{a} }^{-1} }\\
+&\lvert\lvert\bm{\Sigma}_{0}^{-1}\V{B}_{0}\SB{\V{I}+\V{B}_{0}^H\bm{\Lambda}_0^{-1}\V{B}_{0}+\V{F}_{1}^H\bm{\Sigma}_{1}^{-1}\V{F}_{1}}^{-1}\V{F}_{1}^H\\
+&\bm{\Sigma}_{1}^{-1}\V{B}_{1}\SB{\V{I}+\V{B}_{1}^H\bm{\Lambda}_{1}^{-1}\V{B}_{1}+\V{F}_{2}^H\bm{\Sigma}_{2}^{-1}\V{F}_{2}}^{-1}\V{F}_{2}^H\cdots\\
+&\bm{\Sigma}_{k-1}^{-1}\V{B}_{k-1}\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}_{k-1}^{-1}\V{B}_{k-1}+\V{F}_{k}^H \bm{\Sigma}_{k}^{-1}\V{F}_{k}}^{-1}\V{F}_{k}^H\bm{\Sigma}_{k}^{-1} \V{a}\rvert\rvert\\
+\end{split}
+\end{equation}
+
+\section{推论2.1证明}
+
+首先证明一个引理：
+\begin{lemma}
+\begin{equation}
+\begin{split}
+\Nm{\V{U}(\V{M}-\V{U}^H\V{U})^{-1}\V{U}^H}&=\frac{\Nm{\V{U}\V{M}^{-1}\V{U}^H}}{1-\Nm{\V{U}\V{M}^{-1}\V{U}^H}}\\
+\Nm{\V{U}(\V{M}+\V{U}^H\V{U})^{-1}\V{U}^H}&=\frac{\Nm{\V{U}\V{M}^{-1}\V{U}^H}}{1+\Nm{\V{U}\V{M}^{-1}\V{U}^H}}.
+\end{split}
+\label{lemma1}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+\begin{equation}
+\begin{split}
+&\SB{\V{I}-\V{U}\V{M}^{-1}\V{U}^H}^{-1}=\V{I}+\V{U}(\V{M}-\V{U}^H\V{U})^{-1}\V{U}^H\\
+\Longleftrightarrow &\V{U}(\V{M}-\V{U}^H\V{U})^{-1}\V{U}^H=\SB{\V{I}-\V{U}\V{M}^{-1}\V{U}^H}^{-1}-\V{I}\\
+\Longrightarrow &\Nm{\V{U}(\V{M}-\V{U}^H\V{U})^{-1}\V{U}^H}=\Nm{\SB{\V{I}-\V{U}\V{M}^{-1}\V{U}^H}^{-1}-\V{I}}\\
+\Longrightarrow &\Nm{\V{U}(\V{M}-\V{U}^H\V{U})^{-1}\V{U}^H}=\frac{\Nm{\V{U}\V{M}^{-1}\V{U}^H}}{1-\Nm{\V{U}\V{M}^{-1}\V{U}^H}}.\\
+\end{split}
+\end{equation}
+注意到我们目前为止关注的矩阵范数中的矩阵都是对称且正定的，因此lemma1中的$M$应是对称正定的，$M-UU^H$其实也是（从11中对lemma1的应用可以看出）。在这个前提下，式（9）中的$UMU^H$是可以正交对角化的，假设为$QDQ^H$。
+此时，式（9）右边变为$Q((I-D)^{-1}-I)Q^H$的模，也就是对角阵$(I-D)^{-1}-I$中的最大元素，因而式（9）是成立的（这里本来应该限制$UMU^H$的矩阵范数。
+\begin{equation}
+\begin{split}
+&\SB{\V{I}+\V{U}\V{M}^{-1}\V{U}^H}^{-1}=\V{I}-\V{U}(\V{M}+\V{U}^H\V{U})^{-1}\V{U}^H\\
+\Longleftrightarrow &\V{U}(\V{M}+\V{U}^H\V{U})^{-1}\V{U}^H=\V{I}-\SB{\V{I}+\V{U}\V{M}^{-1}\V{U}^H}^{-1}\\
+\Longrightarrow &\Nm{\V{U}(\V{M}+\V{U}^H\V{U})^{-1}\V{U}^H}=\Nm{\V{I}-\SB{\V{I}+\V{U}\V{M}^{-1}\V{U}^H}^{-1}}\\
+\Longrightarrow &\Nm{\V{U}(\V{M}+\V{U}^H\V{U})^{-1}\V{U}^H}=\frac{\Nm{\V{U}\V{M}^{-1}\V{U}^H}}{1+\Nm{\V{U}\V{M}^{-1}\V{U}^H}}.\\
+\end{split}
+\end{equation}
+
+\end{proof}
+回到推论2.1，(B-11)-(B-17)照旧，(B-18)及之后推导修改：
+
+令$\V{A}_k=\bm{\Sigma}^{-1}_k\V{F}_k\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}^{-1}_{k-1}\V{B}_{k-1}+\V{F}_k^H\bm{\Sigma}^{-1}_k\V{F}_k}^{-\frac{1}{2}}$, 则 $\bm{\Lambda}_k^{-1}=\bm{\Sigma}_k^{-1}-\V{A}_k\V{A}_k^H$.
+
+由Lemma 1得：
+\begin{equation}
+\begin{split}
+&f(k+1)\\
+=&\Nm{\V{A}_k^H\V{B}_k\SB{\V{I}+\V{B}_{k}^H\bm{\Lambda}^{-1}_{k}\V{B}_{k}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}^{-1}\V{B}_k^H\V{A}_k}\\
+=&\Nm{\V{A}_k^H\V{B}_k\SB{\V{I}+\V{B}_{k}^H\bm{\Sigma}^{-1}_{k}\V{B}_{k}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}-\V{B}_{k}^H\V{A}_k\V{A}_k^H\V{B}_{k}}^{-1}\V{B}_k^H\V{A}_k}\\
+=&\frac{\Nm{\V{A}_k^H\V{B}_k\SB{\V{I}+\V{B}_{k}^H\bm{\Sigma}^{-1}_{k}\V{B}_{k}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}^{-1}\V{B}_k^H\V{A}_k}}{1-\Nm{\V{A}_k^H\V{B}_k\SB{\V{I}+\V{B}_{k}^H\bm{\Sigma}^{-1}_{k}\V{B}_{k}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}^{-1}\V{B}_k^H\V{A}_k}}\\
+=&\frac{g(k)}{1-g(k)}.
+\end{split}
+\end{equation}
+
+这里，
+
+\begin{equation}
+\begin{split}
+&g(k)\\
+=&\Nm{\V{A}_k^H\V{B}_k\SB{\V{I}+\V{B}_{k}^H\bm{\Sigma}^{-1}_{k}\V{B}_{k}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}\V{B}_k^H\V{A}_k}\\
+=&\Nm{\V{A}_k^H \bm{\Sigma}_k^{\frac{1}{2}}\bm{\Sigma}_k^{-\frac{1}{2}} \V{B}_k\SB{\V{I}+\V{B}_{k}^H\bm{\Sigma}^{-1}_{k}\V{B}_{k}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}^{-1}\V{B}_k^H \bm{\Sigma}_k^{-\frac{1}{2}}\bm{\Sigma}_k^{\frac{1}{2}} \V{A}_k}\\
+\leq & \Nm{\V{A}_k^H \bm{\Sigma}_k^{\frac{1}{2}}\bm{\Sigma}_k^{-\frac{1}{2}} \V{A}_k }\Nm{\bm{\Sigma}_k^{-\frac{1}{2}} \V{B}_k\SB{\V{I}+\V{B}_{k}^H\bm{\Sigma}^{-1}_{k}\V{B}_{k}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}^{-1}\V{B}_k^H \bm{\Sigma}_k^{-\frac{1}{2}}}\\
+=& \Nm{\bm{\Sigma}_k^{\frac{1}{2}} \V{A}_k \V{A}_k^H \bm{\Sigma}_k^{\frac{1}{2}}}\Nm{\bm{\Sigma}_k^{-\frac{1}{2}} \V{B}_k\SB{\V{I}+\V{B}_{k}^H\bm{\Sigma}^{-1}_{k}\V{B}_{k}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}^{-1}\V{B}_k^H \bm{\Sigma}_k^{-\frac{1}{2}}}\\
+=& \Nm{\bm{\Sigma}_k^{-\frac{1}{2}} \V{F}_k\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}^{-1}_{k-1}\V{B}_{k-1}+\V{F}_{k}^H\bm{\Sigma}^{-1}_{k}\V{F}_{k}}^{-1}\V{F}_k^H \bm{\Sigma}_k^{-\frac{1}{2}}}\\
+ &\cdot\Nm{\bm{\Sigma}_k^{-\frac{1}{2}} \V{B}_k\SB{\V{I}+\V{B}_{k}^H\bm{\Sigma}^{-1}_{k}\V{B}_{k}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}^{-1}\V{B}_k^H \bm{\Sigma}_k^{-\frac{1}{2}}}\\
+ =&\frac{\Nm{\bm{\Sigma}_k^{-\frac{1}{2}} \V{F}_k\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}^{-1}_{k-1}\V{B}_{k-1}}^{-1}\V{F}_k^H \bm{\Sigma}_k^{-\frac{1}{2}}}}{1+\Nm{\bm{\Sigma}_k^{-\frac{1}{2}} \V{F}_k\SB{\V{I}+\V{B}_{k-1}^H\bm{\Lambda}^{-1}_{k-1}\V{B}_{k-1}}^{-1}\V{F}_k^H \bm{\Sigma}_k^{-\frac{1}{2}}}}\\
+ &\cdot\frac{\Nm{\bm{\Sigma}_k^{-\frac{1}{2}} \V{B}_k\SB{\V{I}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}^{-1}\V{B}_k^H \bm{\Sigma}_k^{-\frac{1}{2}}}}{1+\Nm{\bm{\Sigma}_k^{-\frac{1}{2}} \V{B}_k\SB{\V{I}+\V{F}_{k+1}^H\bm{\Sigma}^{-1}_{k+1}\V{F}_{k+1}}^{-1}\V{B}_k^H \bm{\Sigma}_k^{-\frac{1}{2}}}}\\
+ \leq & \SB{\frac{c}{c+1}}^2<\frac{1}{2}.
+\end{split}
+\end{equation}
+
+故而
+
+\begin{equation}
+f(k+1)=\frac{g(k)}{1-g(k)}\leq \frac{c^2}{2c+1}<1.
+\end{equation}
+
+\end{document}

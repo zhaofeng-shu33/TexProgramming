@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage{xeCJK}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\begin{document}
+\begin{itemize}
+\item{你说的范数应该是矩阵的谱半径(spectral radius)吧,不过对于对称正定矩阵的$L_2$范数，二者相等。
+see \href{https://en.wikipedia.org/wiki/Matrix_norm}{https://en.wikipedia.org/wiki/Matrix\_norm}
+}
+\item Lemma 1 中的(9)式按矩阵的谱半径处理，相当于：
+\begin{equation}
+\max_{1\leq i\leq n} \{\frac{1}{1-x_i}-1\} =\boxed{ \max_{1\leq i\leq n} \{\frac{x_i}{1-x_i}\}= \frac{\max_{1\leq i\leq n}\{x_i\}}{1-\max_{1\leq i\leq n}\{x_i\}}}
+\end{equation}
+所以你的Lemma 1可能还是有问题。
+\item 关于我的仿真，规模比较小，具体参数并不重要，主要想说明如果层数考虑的太多，由于指数衰减的特性可能最后面几层会由于数值误差的影响结果有问题。当然这一点我并没有具体验证。
+\end{itemize}
+\end{document}

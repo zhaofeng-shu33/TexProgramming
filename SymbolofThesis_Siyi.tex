@@ -1,0 +1,150 @@
+%!TEX program = xelatex
+\documentclass{article}% a book has chapters but an article doesn't
+\usepackage{bookmark}
+\usepackage{ifthen}
+\usepackage{xparse}
+\usepackage{enumitem}
+\usepackage{xeCJK}
+\usepackage{bm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\V[1]{\mathrm{\bf{#1}}}
+\newcommand\Tx[1]{\mathrm{#1}}
+\newcommand\Se[1]{\mathcal{#1}}
+\newcommand\Db[1]{\mathbb{#1}}
+\newcommand{\RN}[1]{\textup{\uppercase\expandafter{\romannumeral#1}}}
+\newcommand\Ept[1]{\Db{E}\left[ #1 \right]}
+\newcommand\Sma[2]{\sum\limits_{#1}^{#2}}
+\newcommand\Prd[2]{\prod\limits_{#1}^{#2}}
+\newcommand\Bop[2]{\bigoplus\limits_{#1}^{#2}}
+\newcommand\Nm[1]{\lvert #1\rvert}
+\newcommand\MB[1]{\left[#1\right]}
+\newcommand\LB[1]{\{#1\}}
+\newcommand\SB[1]{\left(#1\right)}
+\newcommand\Prob[1]{\Tx{Pr}{\MB{#1}}}
+\newcommand\PR[2]{\Tx{Pr}_{#1}{\MB{#2}}}
+\newcommand\Var[1]{\Tx{Var}\MB{#1}}
+\newcommand\Tc[1]{\textcircled{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeatletter
+\newcommand{\thu@denotation@name}{Main Symbol Table}
+\newcounter{thu@bookmark}
+\NewDocumentCommand\thu@chapter{s o m o}{
+  \IfBooleanF{#1}{%
+    \ClassError{thuthesis}{You have to use the star form: \string\thu@chapter*}{}
+  }%
+  %\if@openright\cleardoublepage\else\clearpage\fi\phantomsection%
+  \IfValueTF{#2}{%
+    \ifthenelse{\equal{#2}{}}{%
+      \addtocounter{thu@bookmark}\@ne
+      \pdfbookmark[0]{#3}{thuchapter.\thethu@bookmark}
+    }{%
+      \addcontentsline{toc}{chapter}{#3}
+    }
+  }{%
+    \addcontentsline{toc}{chapter}{#3}
+  }%
+  \section*{#3}%
+  \IfValueTF{#4}{%
+    \ifthenelse{\equal{#4}{}}
+    {\@mkboth{}{}}
+    {\@mkboth{#4}{#4}}
+  }{%
+    \@mkboth{#3}{#3}
+  }
+}
+
+\newlist{thu@denotation}{description}{1}
+\setlist[thu@denotation]
+{%
+  nosep,
+  font=\normalfont,
+  align=left,
+  leftmargin=!, % sum of the following 3 lengths
+  labelindent=0pt,
+  labelwidth=2.5cm,
+  labelsep*=0.5cm,
+  itemindent=0pt,
+}
+\newenvironment{denotation}[1][2.5cm]
+{
+  \thu@chapter*[]{\thu@denotation@name} % no tocline
+  \vskip-30bp
+\begin{thu@denotation}[labelwidth=#1]
+}
+{
+  \end{thu@denotation}
+}
+\makeatother
+
+\begin{denotation}[3cm]
+  \item[$\Se{V}_a$] 移动节点集合
+  \item[$\Se{V}_b$] 锚点集合
+  \item[$\Se{V}_k$] 第$k$层移动节点集合（到目标节点距最短路线长为$k$）
+  \item[$N_a$] 移动节点数量(除目标节点$v_0$以外)
+  \item[$N_b$] 锚点数量
+  \item[$\Se{E}$] 网络中所有通信链路的集合
+  \item[$\Se{E}_k$] 连接$\Se{V}_{k-1}$和$\Se{V}_k$的节点的链路集合
+  \item[$e_{i,j}$] 连接节点$i,j$的链路
+  \item[$\Se{N}_i$] 节点$i$的邻居集合
+  \item[$\Se{N}_i^{\Tx{a}}$] 节点$i$的邻居移动节点集合
+  \item[$\Se{N}_i^{\Tx{b}}$] 节点$i$的邻居锚点集合
+  \item[$u_{i,j}$] 节点$i$指向$j$方向的向量
+  \item[$r_{i,j}$] 节点$i$与节点$j$的距离
+  \item[$v_{i,j}$] $\sqrt{\lambda_{i,j}}u_{i,j}$
+  \item[$\lambda_{i,j}$] $\Se{O}\SB{\frac{1}{r^2_{i,j}}}$
+  \item[$\V{J}_{\Tx{r}}(v_{i,j})$] $v_{i,j}v_{i,j}^{\Tx{H}}$
+  \item[$\V{J}_{\bm{\theta}}$] FIM
+  \item[$\V{J}_{\Tx{e}} \SB{\bm{\theta}_1}$] 部分参数$\bm{\theta}_1$的EFIM
+  \item[$\V{J}^{\Tx{A}}_k$] 第$k$个移动节点来自相邻锚点的信息总和
+  \item[$\Se{J}^{\Tx{SL}}(e,k)$] \textbf{空间链路耦合信息：} 第$k$层某条链路$e$对于目标节点的耦合信息，只保留前$k_0$层的节点，断开$e$后目标节点SPEB的增量
+  \item[$\V{P}_k$] 前$k$层移动节点的位置参数向量
+  \item[$\Se{J}^{\Tx{SN}}(i,k)$] \textbf{空间节点耦合信息：}第$k$层某个节点$i$对于目标节点的耦合信息，$\Se{J}^{\Tx{SN}}(k,i,\lambda)$对于$\lambda$的偏导
+  \item[$\Se{J}^{\Tx{SN}}(k,i,\lambda)$]只保留前$k_0$层的节点，第$k$层某个节点$i$的$\V{J}_{\Tx{r}}$增加$\lambda\V{I}$后，目标节点的SPEB增量
+  \item[$\V{B}_k$] 第$k$层移动节点与第$k+1$层移动节点耦合信息中和第$k$层有关的参数矩阵
+  \item[$\V{F}_k$] 第$k$层移动节点与第$k-1$层移动节点耦合信息中和第$k$层有关的参数矩阵
+  \item[$\bm{\Sigma}_k$] 第$k$层移动节点与第$k$层移动节点耦合信息中和第$k$层有关的参数矩阵
+  \item[$\V{J}_{\Tx{e}}(\V{P},k)$] 只保留前$k$层移动节点，目标节点的FIM
+  \item[$\Se{J}(k)$] 第$k$层移动节点对目标节点的耦合信息，只保留前$k-1$层移动节点相比只保留前$k$层移动节点，目标节点SPEB的减少量
+  \item[$\Lambda$] 泊松随机网络单位面积移动节点数的期望（移动节点密度）
+  \item[$\bm{\Lambda}_k$] 部分定理里和第$k$层移动节点有关的中间迭代值
+  \item[$\V{J}_{\Tx{e}}(\V{p}_k)$] 移动节点$k$的EFIM
+  \item[$\V{J}_{\Tx{e}}^{\Tx{A}}(\V{p}_k)$] 移动节点$k$来自锚点的EFIM
+  \item[$\V{J}_{\Tx{e}}^{\Tx{L}_1}(\V{p}_k)$] 移动节点$k$的EFIM的一阶下界
+  \item[$\V{J}_{\Tx{e}}^{\Tx{U}_1}(\V{p}_k)$] 移动节点$k$的EFIM的一阶上界
+  \item[$\V{C}_{i,j}$] 链路$e_{i,j}$的信息矩阵
+  \item[$\epsilon_{i,j}$] 一阶EFIM近似中$\V{C}_{i,j}$的系数
+  \item[$\V{J}_{\Tx{e}}^{\Tx{L}_2}(\V{p}_k)$] 移动节点$k$的EFIM的二阶下界
+  \item[$\V{J}_{\Tx{e}}^{\Tx{U}_2}(\V{p}_k)$] 移动节点$k$的EFIM的二阶上界
+  \item[$\V{C}_{k,j_1,j_2,j_3,j_4}$] 节点$k$的邻居移动节点$j_1\sim j_4$间的链路以及协作链路$e_{j_1,j_2}$与$e_{j_3,j_4}$关于节点$k$的耦合信息矩阵
+  \item[$\eta_{k,j_1,j_2,j_3,j_4}$] 二阶EFIM近似中$\V{C}_{k,j_1,j_2,j_3,j_4}$的系数
+  \item[$\V{J}_{\Tx{e}}^{\Tx{LD}}(\V{p}_k)$] 移动节点$k$的EFIM的二阶下界对角化
+  \item[$\V{J}_{\Tx{e}}^{\Tx{UD}}(\V{p}_k)$] 移动节点$k$的EFIM的二阶上界对角化
+  \item[$\V{C}_{k,j_1,j_2}$] 节点$k$的邻居移动节点$j_1,j_2$间的链路以及协作链路$e_{j_1,j_2}$关于节点$k$的耦合信息矩阵
+  \item[$\eta_{k,j_1,j_2}$] 二阶EFIM近似对角化后$\V{C}_{k,j_1,j_2}$的系数
+  \item[-------------------] -------------------------------------------------------
+  \item[$v_i^{(t)}$] 节点$i$在时刻$t$到$t+1$时刻的位移
+  \item[$w_{i,t}$] $v_i^{(t)}$方向的单位向量
+  \item[$v_{i,t}$] $\sqrt{\lambda_{i,t}}w_{i,t}$
+  \item[$\lambda_{i,t}$] $\Se{O}(\frac{1}{r^2_{i,j}})$
+  \item[$r_{i,j}$] $v_i^{(t)}$模长
+  \item[$\V{J}_{\Tx{t}}v_{i,j}$] $v_{i,j}$外积
+  \item[$\V{P}^{(\Tx{t})}$] 时刻$t$网络移动节点的空间位置向量
+  \item[$\V{q}$] 时间$0\sim T$内网络移动节点位置向量参数, $\V{P}^{(\Tx{0})}\sim \V{P}^{(\Tx{T})}$的级联
+  \item[$\V{J}_{\Tx{et}}(\V{q},T)$] 时间$0\sim T$内网络移动节点的FIM
+  \item[$\V{S}_t$] 时刻$t$移动节点空间协作信息FIM, $\V{J}_{\Tx{e}}(\V{P}^{t})$
+  \item[$\V{T}_{t,t+1}$] 时刻$t$与时刻$t+1$间移动节点时间协作信息矩阵，$\Tx{diag}(\V{J}_{\Tx{t}}(v_{0,t}),\V{J}_{\Tx{t}}(v_{1,t}),\cdots,\V{J}_{\Tx{t}}(v_{N,t}))$
+  \item[$\V{q}_t$] 时间$T-t$到$T$移动节点位置向量参数，$\V{P}^{(\Tx{T-t})}\sim \V{P}^{(\Tx{T})}$的级联
+  \item[$\Se{J}^{\Tx{TL}}(e_{i,j}^{(t)},T)$] \textbf{时间链路耦合信息：}考虑在时刻$T-t$连接$i,j$后断开的链路$e_{i,j}^{(t)}$, 假设$e_{i,j}^{(t)}$在时刻$T-t$不存在, 目标节点SPEB增量
+  \item[$\Se{J}^{\Tx{TL}}(i^{(t)},T)$] \textbf{时间节点耦合信息：}$\Se{J}^{\Tx{TL}}(i^{(t)},T,\lambda)$对于$\lambda$的偏导
+  \item[$\Se{J}^{\Tx{TL}}(i^{(t)},T,\lambda)$] 某个节点$i$在时刻$t$来自锚点的信息增加$\lambda\V{I}$后目标节点SPEB减少量
+  \item[$\V{J}_{\Tx{et}}(\V{q},t)$] 网络在时间$T-t\sim T$内的FIM
+  \item[$\Se{J}(t)$] 只回溯$t-1$个时间段目标节点SPEB相比回溯$t$个时间段的减少量
+  \item[$\bm{\Lambda}_{T-t}$] 第三章定理中时刻$T-t$的相关迭代中间值 (作用和第二章中$\bm{\Lambda}_{k}$相似)
+  \item[$\V{U}_{T-t,T-t+1}$] 时刻$T-t$和$T-t+1$的移动节点耦合信息和时刻$T-t,T-t+1$相关的参数矩阵（作用和第二章中$\V{B}_{k-1},\V{F}_K$相似） 
+\end{denotation}
+
+
+\end{document}
