@@ -1,9 +1,6 @@
 # Intro
-This git repository contains tex codes to generate my under-graduate paper.
+This git repository contains TeX source files to generate my undergraduate thesis.
 
 # How to build
-run "xelatex myMain.tex" from command line.
-
-# Dependency
-[ThuThesis](https://github.com/xueruini/thuthesis)
-
+To quickly start, run `sh build.sh`. For further reference,
+Please see [ThuThesis](https://github.com/xueruini/thuthesis).
