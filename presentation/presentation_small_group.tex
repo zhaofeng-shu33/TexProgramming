@@ -1,0 +1,704 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This file is a template using the "beamer" package to create slides for a talk or presentation
+% - Giving a talk on some subject.
+% - The talk is between 15min and 45min long.
+% - Style is ornate.
+
+% MODIFIED by Jonathan Kew, 2008-07-06
+% The header comments and encoding in this file were modified for inclusion with TeXworks.
+% The content is otherwise unchanged from the original distributed with the beamer package.
+
+\documentclass[notheorems,xetex,mathserif,serif]{beamer}
+\usepackage{xeCJK}%preamble part
+%\usepackage{showframe}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{color}
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{\end{list}}
+\usepackage{subcaption}
+\usepackage{amsmath, amsthm, amssymb}
+\setbeamertemplate{theorems}[numbered]\DeclareMathOperator*{\rgmax}{argmax}
+\DeclareMathOperator*{\rgmin}{argmin}
+\DeclareMathOperator{\Tr}{Tr}
+%\setCJKmonofont{SimSun}
+%\setmainfont{Times New Roman}
+\setbeamertemplate{frametitle}[default][center]
+\setbeamertemplate{footline}[frame number]
+\setlength{\parindent}{0.8cm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{cor}{Corollary}
+\newcommand{\transpose}[1]{\ensuremath{#1^{\scriptscriptstyle T}}}
+
+
+% Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+%
+% In principle, this file can be redistributed and/or modified under
+% the terms of the GNU Public License, version 2.
+%
+% However, this file is supposed to be a template to be modified
+% for your own needs. For this reason, if you use this file as a
+% template and not specifically distribute it as part of a another
+% package/program, I grant the extra permission to freely copy and
+% modify this file as you see fit and even to delete this copyright
+% notice.
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  % or ...
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+
+
+% or whatever
+
+% or whatever
+
+\usepackage{times}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+
+\title[机理研究\insertframenumber/\inserttotalframenumber] % (optional, use only with long paper titles)
+{无线网络中定位信息的时空传播机理研究}
+
+
+\author[赵丰] % (optional, use only with lots of authors)
+{赵丰}
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[清华大学] % (optional, but mostly needed)
+{
+  数学科学系\\
+  清华大学\\
+  \quad\\
+  指导老师:\\
+  电子工程系\\
+  沈渊
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+}
+\date{2017年4月13日}
+
+% This is only inserted into the PDF information catalog. Can be left
+% out.
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{frame1.jpg}
+%\logo{\pgfuseimage{university-logo}}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>{目录}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command:
+
+%\beamerdefaultoverlayspecification{<+->}
+
+
+\begin{document}
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{概要}
+  \tableofcontents
+  % You might wish to add the option [pausesections]
+\end{frame}
+
+
+% Since this a solution template for a generic talk, very little can
+% be said about how it should be structured. However, the talk length
+% of between 15min and 45min and the theme suggest that you stick to
+% the following rules:
+
+% - Exactly two or three sections (other than the summary).
+% - At *most* three subsections per section.
+% - Talk about 30s to 2min per frame. So there should be between about
+%   15 and 30 frames, all told.
+
+\section{问题的数学模型}
+
+\subsection[非协作定位场景]{非协作定位场景}
+
+\begin{frame}{单个节点定位}
+
+        考虑一个平面定位场景中部署了$N_b$个位置已知的\textcolor{blue}{锚点}，锚点的位置记为$\{\bm{p}^b_1,\bm{p}^b_2,...\bm{p}^b_{N_b}\}$,现在要对场景中一个\textcolor{blue}{位置未知}的节点进行定位，待定位节点的位置为$\bm{p}$，
+
+假设\textcolor{blue}{待定位节点}和每一个锚点都可以相互通信进行无线测距，距离测量量服从均值为$||\bm{p}^b_i-\bm{p}||)$，方差为$\sigma_i$的正态分布$X_i$。
+
+$N_b$个\textcolor{blue}{独立}测量量的联合概率分布为:
+\begin{equation}\label{eq:single}
+f(x_1,...x_{N_b}|\textbf{p})=\prod_{i=1}^{N_b}\frac{1}{\sqrt{2\pi\sigma_i^2}}exp(-\frac{(x_i-f(||\bm{p}^b_i-\bm{p}||))^2}{2\sigma_i^2}
+\end{equation}
+
+根据点估计的理论，对于一个无偏估计量，它的方差的下界是\textcolor{blue}{费舍尔信息量}(Fisher Information)的倒数，称之为\textcolor{blue}{克拉美罗界}(Crame Rao Bound)。
+  % - A title should summarize the slide in an understandable fashion
+  %   for anyone how does not follow everything on the slide itself.
+\end{frame}
+
+\begin{frame}{费舍尔信息矩阵}
+以节点的\textcolor{blue}{2维}位置为待估计参数，费舍尔信息量推广为\textcolor{blue}{费舍尔信息矩阵}(Fisher Information Matrix)。
+
+对于我们的模型问题，费舍尔信息矩阵有如下的形式：
+\begin{equation}\label{eq:uu}
+I(\bm{p})=\displaystyle\sum_{i=1}^{N_b}\frac{1}{\sigma_i^2}\bm{u}_i\bm{u}_i^T
+\end{equation}
+其中
+\begin{equation}
+\bm{u_i}=\frac{\bm{p}^b_i-\bm{p}}{||\bm{p}^b_i-\bm{p}||}
+\end{equation}
+
+\end{frame}
+\subsection[协作定位场景]{协作定位场景}
+
+\begin{frame}{多个待测节点协作定位}
+考虑一个平面定位场景中不仅部署了$N_b$个位置已知的锚点，还有$N_a$个位置未知的待定位节点，某些位置未知的节点之间可以\textcolor{blue}{彼此测距}，第i和第j个未知节点距离测量量服从均值为$||\bm{p}^a_i-\bm{p}^a_j||)$，方差为$\sigma_{ij}$的正态分布$X_{ij}$。
+
+以$N_a$个未知节点的位置$\{p_i^a\}$作为待估计的参数，可以得到测距量的联合概率密度函数为
+
+\begin{equation}
+\prod_{i=1}^{N_a} f(x^i_1,...x^{i}_{N_b}|\bm{p^a_i})\prod_{(i,j)\in \mathcal{E}}\frac{1}{\sqrt{2\pi\sigma^2}}exp(-\frac{(x_{ij}-f(||\bm{p}^a_i-\bm{p}^a_j||))^2}{2\sigma_{ij}^2})
+\end{equation}
+上式中$\mathcal{E}$表示可以彼此测距的未知节点的二元组的集合，而$x_t^i$表示第t个锚点和第i个未知节点的距离测量量。
+\end{frame}
+\begin{frame}{费舍尔信息矩阵}
+关于$2N_a$个参数$\{p_i^a\}$的费舍尔信息矩阵有如下的表达形式：
+\begin{equation}
+\scriptsize{
+I(\bm{P})=
+\left(
+\begin{array}{cccc}
+I_B(\bm{p}_1)+&-\bm{C}_{1,2}&...&-\bm{C}_{1,N_a}\\
+\sum_{j\in \{1,..N_a\}\backslash\{1\}}\bm{C}_{1,j}&&&\\
+&&&\\
+-\bm{C}_{1,2} & I_B(\bm{p}_2)+
+&...&-\bm{C}_{2,N_a}\\
+&\sum_{j\in \{1,..N_a\}\backslash \{2\}}\bm{C}_{2,j}&&\\
+&&&\\
+\vdots &\vdots&\ddots &\vdots\\
+&&&\\
+&&&I_B(\bm{p}_{N_a})+\\
+-\bm{C}_{1,N_a}&-\bm{C}_{2,N_a}&...& \sum_{j\in \{1,..N_a\}\backslash\{N_a\}}\bm{C}_{N_a,j}\\
+\end{array}
+\right)
+}
+\end{equation}
+上面的式子中$I_B(\bm{p}_i)$表示$N_b$个锚点对未知节点距离测量的贡献，和前面的(\ref{eq:uu})式相同。$C_{i,j}=\bm{1}_{(i,j)\in E}\lambda_{i,j}\bm{u}_{ij}\bm{u}_{ij}^T$,表示未知节点i和j协作的矩阵。
+$\bm{u}_{ij}=\frac{\bm{p}^a_i-\bm{p}^a_j}{||\bm{p}^a_i-\bm{p}^a_j||}$表示未知节点i和j的方向向量。
+  \end{frame}
+
+
+\section{研究内容}
+\subsection{非协作单节点定位网络定位误差求解}
+\begin{frame}{非协作单节点定位网络描述与求解}
+非协作单节点定位网络的性能描述可以借助一种比较直观的方式，为此引入以下\textcolor{blue}{信息椭圆}的概念:
+\begin{definition}
+信息椭圆是参数空间$\theta$上由费舍尔信息矩阵定义的空间曲面:
+\begin{equation}\label{eq:ie}
+\bm{x}^T\,\bm{I}_{\theta}^{-1}\bm{x}=1,\bm{x}\in \mathbb{R}^{2N}
+\end{equation}
+\end{definition}
+信息椭圆各个主轴的长度衡量了特征值的大小，代表了该方向的定位精度。
+下面研究二维情形下由$I(\bm{p})=\sum \lambda_i \bm{u}_i \bm{u}_i^T$决定的信息椭圆的形状，即求$I(\bm{p})$的特征值和特征向量。
+将二维向量看成复平面的复数，$I(\bm{p})$看成复平面上的线性算子，作用规则是$I(\bm{p})\bm{x}=\sum \lambda_i (\bm{x}\cdot\bm{u}_i)\bm{u}_i$，其值域仍在复平面内，算子$I(\bm{p})$的特征值$\lambda$和特征向量$\bm{y}$满足$I(\bm{p})\bm{y}=\lambda \bm{y}$。
+\end{frame}
+\begin{frame}
+设$\bm{x}$幅角为$\theta$,$\bm{u}_i$幅角为$\phi_i$,由$I(\bm{p})\bm{x}=\sum \lambda_i (\bm{x}\cdot\bm{u}_i)\bm{u}_i$可得
+\begin{equation}
+\sum \lambda_i \cos(\theta-\phi_i)e^{j\phi_i}=\lambda e^{i\theta}
+\end{equation}
+利用虚部为0的条件，可以进一步得到：
+$\theta$满足方程
+\begin{eqnarray}\label{eq:fim_eq_1}
+\sum \lambda_i \sin(2(\theta-\phi_i))=0\\
+\lambda=\sum \lambda_i \cos^2(\theta-\phi_i)\label{eq:fim_eq_2}
+\end{eqnarray}
+下面给出关于矩阵$I(\bm{p})$有两个不同的特征值即信息椭圆非退化的一个充要条件：
+\begin{theorem}
+(\ref{eq:fim_eq_2})有两个不同的实根当且仅当\[
+\sum (\sin(2\phi_i)\lambda_i)^2+(\cos(2\phi_i)\lambda_i)^2 \neq 0\]
+\end{theorem}
+\end{frame}
+\begin{frame}{定性分析}
+\begin{proof}
+设$A:=\sum\sin(2\phi_i)\lambda_i,B:=\sum\cos(2\phi_i)\lambda_i$
+
+充分性:若$\sqrt{A^2+B^2} \neq 0$,
+设$\cos\phi=\frac{A}{\sqrt{A^2+B^2}},\sin\phi=\frac{A}{\sqrt{A^2+B^2}}$
+等式$(\ref{eq:fim_eq_1})$可化为:$\cos(2\theta+\phi)=0$,
+等式$(\ref{eq:fim_eq_2})$可化为:
+\begin{equation}\label{eq:Lambda}
+\lambda=\frac{\sum \lambda_i}{2}+\frac{1}{2}\sqrt{A^2+B^2}\sin(2\theta+\phi)=\frac{\sum \lambda_i}{2}\pm\frac{1}{2}\sqrt{A^2+B^2}
+\end{equation}
+有两个不相同的特征根。
+
+必要性:反设A=0,B=0,则$\forall \theta$,等式$(\ref{eq:fim_eq_1})$成立，且
+等式$(\ref{eq:fim_eq_2})$化为$\lambda=\frac{\sum \lambda_i}{2}$,只有一个特征根，对应$I(\bm{p})$退化为对角阵，矛盾。
+
+\end{proof}
+根据式(\ref{eq:Lambda}),误差下界为$\frac{1}{\tilde{\lambda_1}}+\frac{1}{\tilde{\lambda_2}}=\frac{2\sum \lambda_i}{(\sum \lambda_i)^2-(A^2+B^2)}$，由此可以看出当$A^2+B^2=0$即信息椭圆退化为圆时误差下界最小。
+\end{frame}
+\subsection{两个未知节点协作的场景平均定位误差求解}
+\begin{frame}
+两个移动节点协作情况下，为求4维费舍尔信息矩阵特征多项式的表达式，需要下面的定理：
+\begin{theorem}\label{thm:ShenIden}
+设$J$是对称正定的矩阵(对于FIM这一点成立)，那么下式成立：
+\begin{equation}\label{eq:ShenIden}
+|J+\epsilon \bm{u}\bm{u}^T|=|J|+\epsilon \bm{u}^TJ^*\bm{u}
+\end{equation}
+其中$J^*$表示J的伴随矩阵，满足等式$JJ^*=|J|\bm{I}$
+\end{theorem}
+证明上面的定理需要如下两个引理:
+\begin{lemma}\label{lemma:block}
+如果方阵$\bm{M}$可以写成分块的形式$\left(\begin{array}{cc}
+A&B\\
+C&D\\
+\end{array}\right)$，而且A是可逆的对角阵，那么$\bm{M}$的行列式$|\bm{M}|=|A||D-CA^{-1}B|$
+\end{lemma}
+\end{frame}
+\begin{frame}
+\begin{proof}
+通过第三类初等变换方阵我们有\[
+\left(\begin{array}{cc}
+I&0\\
+-CA^{-1}&I\\
+\end{array}\right) \bm{M}=\left(\begin{array}{cc}
+A&B\\
+0&D-CA^{-1}B\\
+\end{array}\right)\]
+两边同时取行列式即得要证明的式子。
+\end{proof}
+\begin{lemma}
+如果$\bm{u}$是一个n维的列向量,$\bm{I}$是n维单位阵，则我们有行列式恒等式:
+\begin{equation}\label{eq:con_eq}
+|(1+\bm{u}^T\bm{u})\bm{I}-\bm{u}\bm{u}^T|=(1+\bm{u}^T\bm{u})^{n-1}
+\end{equation}
+\end{lemma}
+证明(\ref{eq:con_eq})需要下面的Woodbury 矩阵求逆公式
+\begin{equation}
+(A+UCV)^{-1}=A^{-1}-A^{-1}U(C^{-1}+VA^{-1}U)^{-1}VA^{-1}
+\end{equation}
+其中A,C均是可逆的方阵
+\end{frame}
+\begin{frame}
+\begin{proof}
+用数学归纳法证明，首先我们对$n=2$的情形直接验证可得(\ref{eq:con_eq})成立。
+假设结论对n-1维的情形成立，设$\bm{u}=(\bm{v}^T,u_n)^T$,其中$\bm{v}$是n-1维的列向量，那么对$\bm{v}/\sqrt{1+u_n^2}$用归纳假设有:
+\begin{equation}
+|(1+\frac{||\bm{v}||^2}{1+u_n^2})\bm{I}_{n-1}-\frac{\bm{v}\bm{v}^T}{1+u_n^2}|=(1+\frac{||\bm{v}||^2}{1+u_n^2})^{n-2}
+\end{equation}
+其中,$||\bm{v}||^2=\bm{v}^T\bm{v},||\cdot||$表示欧式空间的2范数。
+由上式可得
+\begin{equation}
+A:=(1+u_n^2+||\bm{v}||^2)\bm{I}_{n-1}-\bm{v}\bm{v}^T,\text{with }|A|=(1+u_n^2)(1+u_n^2+||\bm{v}||)^{n-2}
+\end{equation}
+对n维的情形,$(1+\bm{u}^T\bm{u})\bm{I}-\bm{u}\bm{u}^T$可以写成分块矩阵的形式$\left(\begin{array}{cc}
+A&-u_n\bm{v}\\
+-u_n\bm{v}^T&||\bm{v}||^2+1\\
+\end{array}\right)$
+由引理(\ref{lemma:block})得:
+\begin{equation}\label{eq:LMidd}
+|(1+\bm{u}^T\bm{u})\bm{I}-\bm{u}\bm{u}^T|=|A|(||\bm{v}||^2+1-u_n^2 \bm{v}^TA^{-1}\bm{v})
+\end{equation}
+\end{proof}
+\end{frame}
+\begin{frame}
+\begin{proof}[Proof continued]
+由Woodbury矩阵求逆公式：
+\begin{equation}\label{eq:AInv}
+A^{-1}=\frac{1}{1+||\bm{v}||^2+u_n^2}-\frac{\bm{v}(-1+||\bm{v}||^2/(1+||\bm{v}||^2+u_n^2))^{-1}\bm{v}^T}{(1+||\bm{v}||^2+u_n^2)^2}
+\end{equation}
+将(\ref{eq:AInv})代入(\ref{eq:LMidd})中，化简即可得对n的情形要证的恒等式成立。
+\end{proof}
+\begin{proof}[定理(\ref{thm:ShenIden})证明]
+式(\ref{eq:ShenIden})等价于
+\begin{equation}\label{eq:ShenIden_1}
+|J+\epsilon \bm{u}\bm{u}^T|=|J|(1+\epsilon \bm{u}^TJ^{-1}\bm{u})
+\end{equation}
+因为J是对称正定的矩阵,所以存在正交矩阵Q,使得$J=QDQ^{-1}$,D是对角阵,
+代入(\ref{eq:ShenIden_1})中得:
+$|D+\epsilon \bm{y}\bm{y}^T|=|D|(1+\epsilon \bm{y}^TD^{-1}\bm{y})$
+\\
+\qquad\\
+\end{proof}
+\end{frame}
+\begin{frame}
+\begin{proof}[Proof continued]
+其中$\bm{y}=Q^{-1}\bm{u}$,因此我们只需对对角矩阵证明定理成立。
+设J是n维对角阵,由Woodbury矩阵恒等式可得:
+\begin{equation}
+(J+\epsilon \bm{u}\bm{u}^T)^{-1}=J^{-1}-J^{-1}\bm{u}\bm{u}^TJ^{-1}/(\epsilon^{-1}+\bm{u}^TJ^{-1}\bm{u})
+\end{equation}
+整理得:
+\begin{equation}\label{eq:ShenIden_2}
+(J+\epsilon \bm{u}\bm{u}^T)^{-1}=J^{-1}\frac{(1+\epsilon\bm{u}^TJ^{-1}\bm{u})\bm{I}-\epsilon \bm{u}\bm{u}^TJ^{-1}}{1+\epsilon\bm{u}^TJ^{-1}\bm{u}}
+\end{equation}
+如果我们能证明:
+\begin{equation}
+|(1+\epsilon\bm{u}^TJ^{-1}\bm{u})\bm{I}-\epsilon \bm{u}\bm{u}^TJ^{-1}|=(1+\epsilon\bm{u}^TJ^{-1}\bm{u})^{n-1}
+\end{equation}
+则通过对(\ref{eq:ShenIden_2})两边取行列式即可得到要证的式子，这里设$J=\text{diag}(\lambda_1,...\lambda_n)$,取$y=\sqrt{\epsilon}(u_1/\sqrt{\lambda_1},...u_n/\sqrt{\lambda_n})$,那么上式和(\ref{eq:con_eq})具有相同的形式，因此定理结论成立。
+\end{proof}
+\end{frame}
+\subsection{全连接网络节点平均定位误差求解}
+\begin{frame}{全连接网络描述与求解}
+在协作定位网络的问题模型下，给出下面三个简化条件:
+\begin{enumerate}
+\item 锚点测距方差$\sigma_i^2=\frac{1}{a}$
+\item 未知节点彼此测距方差$\sigma^2_{ij}=\frac{1}{b}$
+\item $\mathcal{E}=\{(i,j)|1\leq i <j\leq N\},N:=N_a,\angle\bm{u}_j=\frac{2\pi j}{n}$
+\end{enumerate}
+$I(\bm{P})$的最大特征值和最小特征值可由\textcolor{blue}{瑞利商}求出，关于瑞利商有如下定理:
+\begin{theorem}\label{theorem:rayleigh}
+  设$\bm{A}$是一个对称正定的矩阵，设$\bm{v}_{\lambda}$为A的特征值$\lambda$对应的特征向量，则:
+\[
+\displaystyle\lambda_{\text{max}}=\max_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x},\bm{v}_{\lambda_{\text{max}}}=\rgmax_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x}
+\]\[
+\displaystyle\lambda_{\text{min}}=\min_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x},\bm{v}_{\lambda_{\text{min}}}=\rgmin_{||\bm{x}||=1} \transpose{\bm{x}}\bm{A}\bm{x}
+\]
+\end{theorem}
+\end{frame}
+\begin{frame}
+在条件(1),(2)成立的情况下，费舍尔信息矩阵$I(\bm{P})=a\bm{I}_{2N}+b\bm{J}$,其中$\bm{J}_{ij}=\begin{cases}
+\sum_{k=1,k\neq i}^N \bm{u}_{ik}\bm{u}_{ik}^T&i=j\\
+-\bm{u}_{ij}\bm{u}_{ij}^T&i\neq j,
+\end{cases}$，瑞利商为:
+\begin{equation}
+R(\bm{x})=b\sum_{i\leq j\leq N} (\bm{u}_{ij}^T(\bm{x}_i-\bm{x}_j))^2+a,\bm{x}_i\in \mathbb{R}^2
+\end{equation}
+容易看出，当$\bm{x}_i=\bm{x}_j$或$(\bm{x}_i-\bm{x}_j)$与$\bm{u}_{ij}$正交时，瑞利商$R(\bm{x})$取到最小值，
+利用定理(\ref{theorem:rayleigh}),关于$I(\bm{P})$的特征值，我们有如下定理:
+\begin{theorem}
+如果简化条件1和2成立，那么$I(\bm{P})$的最大特征值是$a+Nb$,最小特征值是a;
+如果三个简化条件均成立，\\
+那么$\mathbb{R}_{2N}=V_{a+Nb}\oplus V_a\oplus V_{a+Nb/2}$,
+\\且$dim(V_a)=3,dim(V_{a+Nb/2})=2N-4$
+\end{theorem}
+\end{frame}
+\begin{frame}
+\begin{proof}
+设$\mathring{p}_i$表示$\bm{p}_i$绕原点旋转90°后的向量,$\bm{e}_1=(1,0),\bm{e}_2=(0,1)$,
+容易看出
+\[
+V_a \supset\text{span}\{\{\bm{\mathring{p}_1},\bm{\mathring{p}_2},...\bm{\mathring{p}} _N\},\{\bm{e}_1,\bm{e}_1,...\bm{e}_1\},\{\bm{e}_2,\bm{e}_2,...\bm{e}_2\}\}:=K_a
+\]
+下面证明$a+Nb$是$I(\bm{P})$的最大特征值,由Cauchy不等式:
+\begin{equation}
+R(\bm{y})\leq b\sum_{i\leq j\leq N} ||\bm{u}_{ij}||^2||\bm{y}_i-\bm{y}_j||^2+a=b\sum_{i\leq j\leq N}||\bm{y}_i-\bm{y}_j||^2+a
+\end{equation}
+取等条件是$\forall i,j\in \{1,2,...N\},i\neq j$,有$\bm{y}_i-\bm{y}_j$与$\bm{u}_{ij}$均平行,比如可以取
+$\bm{y}_1-\bm{y}_j=k(\bm{p}_1-\bm{p}_j),j=2,...N$。
+满足
+$\bm{y}_i-\bm{y}_j=(\bm{y}_1-\bm{y}_j)-(\bm{y}_1-\bm{y}_i)
+=k(\bm{p}_i-\bm{p}_j)\parallel \bm{u}_{ij}$
+这时原来2N个自由度的y还剩下$\bm{y}_1$和k三个自由度，考虑条件极值
+$f(\bm{y})=\sum_{i\leq j\leq N} ||\bm{y}_i-\bm{y}_j||^2,\text{s.t } ||\bm{y}||=1$
+设矩阵T为:
+\\
+\qquad\\
+\end{proof}
+\end{frame}
+\begin{frame}
+\begin{proof}[Proof continued]
+\[
+\bm{T}=\left(
+\begin{array}{cccc}
+(N-1)\bm{I}_2&-\bm{I}_2&\dots&-\bm{I}_2\\
+-\bm{I}_2&(N-1)\bm{I}_2&\dots&-\bm{I}_2\\
+\vdots & \vdots & \ddots & \vdots\\
+-\bm{I}_2& -\bm{I}_2 & \dots & (N-1)\bm{I}_2
+\end{array}
+\right)
+\]
+$\bm{T}$可以写成$\bm{T}=N\bm{I}-\bm{e}\bm{e}^T$,其中$\bm{e}=(\bm{I}_2,\dots,\bm{I}_2)^T$。而$f(\bm{y})=\bm{y}^T\bm{T}\bm{y}=N-(\bm{e}^T\bm{y})^T(\bm{e}^T\bm{y})\leq N$取等条件是$\bm{e}^T\bm{y}=\bm{0}$,这个条件限制住了两个自由度，再加上$\bm{y}$模长为1的约束，前一次不等式取等剩下的三个自由度刚好够用，
+所以$\bm{y}$按该方法可以唯一取到，其张成的子空间记为$K_b$。
+具体求解可得:
+$\bm{y}_1=\frac{k}{N}\sum_{j=2}^N (\bm{p}_1-\bm{p}_j)$
+将$\bm{y}_i$的表达式代入$||\bm{y}||=1$中，可以解出唯一的$k^2=M$
+其中
+\vspace{-2mm}
+\[
+M\sum_{i=1}^N||\sum_{j=1,j\neq i}^N(\bm{p}_1-\bm{p}_j)||^2=1
+\]
+\end{proof}
+\end{frame}
+\begin{frame}
+\begin{proof}[Proof continued]
+  在条件(3)$\angle\bm{u}_j=\frac{2\pi j}{n}$的进一步假设下，设$\bm{x}\in (K_a\oplus K_b)^{\bot}$,
+  下面证明$\bm{x}$是矩阵$\bm{J}$的特征值为$\frac{N}{2}$对应的特征向量。
+  由正交性条件，有:
+\begin{eqnarray}
+\sum \bm{x}_i^{(1)}=\sum x_i^{(2)}=0\\
+\sum \bm{x}_i \cdot \bm{u}_i=\sum x_i^{(1)} \cos(\frac{2\pi j}{n})+x_i^{(2)} \sin(\frac{2\pi j}{n}) =0\label{eq:coupling1}\\
+\sum \bm{x}_i \cdot \mathring{\bm{u}}_i=\sum -x_i^{(1)} \sin(\frac{2\pi j}{n})+x_i^{(2)} \cos(\frac{2\pi j}{n}) =0\label{eq:coupling2}
+\end{eqnarray}
+下面考虑$\bm{K}\cdot \bm{x}$的第j行为:
+\begin{equation}\label{eq:tt}
+\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^T(\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)
+\end{equation}
+\quad\\
+\quad\\
+\end{proof}
+\end{frame}
+\begin{frame}
+\begin{proof}[Proof continued]
+我们要证明上面的式子等于$\frac{N}{2}\bm{x}_j$,为此，首先化简$\frac{(\bm{u}_j-\bm{u}_k)}{||\bm{u}_j-\bm{u}_k||}$
+可以推出上式等于:
+\begin{equation}
+\frac{(\bm{u}_j-\bm{u}_k)}{||\bm{u}_j-\bm{u}_k||}=\text{sgn}(j-k)\binom{-\sin\frac{\pi(j+k)}{n}}{\cos\frac{\pi(j+k)}{n}}
+\end{equation}
+上面的式子中$\text{sgn}(j-k)$因为在式(\ref{eq:tt})中出现2次，所以相乘恒为1，它与求和指标k无关，可以作为公因子提取出来。
+所以证明
+$\sum_{k\neq j}^n \frac{(\bm{u}_j-\bm{u}_k)^T(\bm{x}_j-\bm{x}_k)}{||\bm{u}_j-\bm{u}_k||^2}(\bm{u}_j-\bm{u}_k)=\frac{N}{2}\bm{x}_j
+$
+化简为分别证明:
+$\scriptsize{
+(*)\sum ((-\sin\frac{(j+k)\pi}{n},\cos\frac{(j+k)\pi}{n})\binom{x_j^{(1)}-x_k^{(1)}}{x_j^{(2)}-x_k^{(2)}})
+\cos\frac{(j+k)\pi}{n}=\frac{N}{2}x_j^{(2)}}$
+$(**)\scriptsize{\sum ((-\sin\frac{(j+k)\pi}{n},\cos\frac{(j+k)\pi}{n})\binom{x_j^{(1)}-x_k^{(1)}}{x_j^{(2)}-x_k^{(2)}})
+(-\sin\frac{(j+k)\pi}{n})=\frac{N}{2}x_j^{(1)}}$\\
+(*)式等价于证明：\\
+\quad\\
+\end{proof}
+\end{frame}
+\begin{frame}
+\begin{proof}[Proof continued]
+$\sum (-\sin\frac{(j+k)2\pi}{n},1+\cos\frac{(j+k)2\pi}{n})\binom{x_j^{(1)}-x_k^{(1)}}{x_j^{(2)}-x_k^{(2)}}=Nx_j^{(2)}
+$\\
+在(\ref{eq:coupling1}),(\ref{eq:coupling2})式中，分别将(\ref{eq:coupling1})乘以$\sin(\frac{2\pi k}{n})$与(\ref{eq:coupling2})乘以$\cos(\frac{2\pi k}{n})$相减得:
+\begin{equation}
+\sum x_i^{(1)}\sin\frac{(j+k)2\pi}{n}-x_i^{(2)}\cos\frac{(j+k)2\pi}{n}=0
+\end{equation}
+利用上面这个等式即可证(*)式。
+在(\ref{eq:coupling1}),(\ref{eq:coupling2})式中，分别将(\ref{eq:coupling1})乘以$\cos(\frac{2\pi k}{n})$与(\ref{eq:coupling2})乘以$\sin(\frac{2\pi k}{n})$相加得:
+\begin{equation}
+\sum x_i^{(1)}\cos\frac{(j+k)2\pi}{n}+x_i^{(2)}\sin\frac{(j+k)2\pi}{n}=0
+\end{equation}
+利用上面这个等式同理可证明(**)式。
+\end{proof}
+\end{frame}
+\subsection{线型网络节点平均定位误差求解}
+\begin{frame}{线型网络描述与求解}
+在协作定位网络的问题模型下，加如下三个条件:
+\begin{itemize}
+\item 锚点测距方差$\sigma_i^2=\frac{1}{a}$
+\item 未知节点彼此测距方差$\sigma^2_{ij}=\frac{1}{b}$
+\item $\mathcal{E}=\{(1,2),(2,3),...(N-1,N)\},N:=N_a,\bm{u}_i:=\bm{u}_{i(i+1)},u_i=u_{i+1}$
+\end{itemize}
+那么费舍尔信息矩阵的形式可化简为$I(\bm{P})=a\bm{I}+b\bm{J}$:
+其中\[
+J=Q\left(
+\begin{array}{ccccc}
+K_1&-K_1&\dots&&0\\
+-K_1&2K_1&-K_1&\dots&0\\
+\vdots &\vdots&&\ddots &\vdots\\
+0&&\dots&-K_1&K_1\\
+\end{array}
+\right)Q^{-1}
+\]
+其中$K_1=\text{diag}\{1,0\}$，$Q=\text{diag}\{R_{\theta},...R_{\theta}\}$,$R_{\theta}$为二维旋转矩阵
+求$\lim_{N\to \infty}\frac{\Tr(J^{-1})}{N}$
+\end{frame}
+\begin{frame}
+直接求解该问题需要如下两个引理:
+\begin{lemma}\label{lemma:change}
+设L是$m\times n$的矩阵，$a,\epsilon > 0$则
+\begin{equation}
+|a\bm{I}_m+\epsilon \bm{L}\bm{L}^T|=a^m|\bm{I}_n+\frac{\epsilon}{a} \bm{L}^T\bm{L}|
+\end{equation}
+\end{lemma}
+\begin{proof}
+不妨设$a=\epsilon=1$,
+考虑到
+\[
+\left(\begin{array}{cc}
+\bm{I}_n+\bm{L}^T\bm{L}&\bm{0}\\
+\bm{L}&\bm{I}_m\\
+\end{array}\right)\sim\left(\begin{array}{cc}
+\bm{I}_n&-\bm{L}^T\\
+\bm{L}&\bm{I}_m\\
+\end{array}\right)\sim\left(\begin{array}{cc}
+\bm{I}_n&-\bm{L}^T\\
+0&\bm{I}_m+\bm{L}\bm{L}^T\\
+\end{array}\right)
+\]
+其中$\sim$表示矩阵相抵，两边取行列式即得$|\bm{I}_m+\bm{L}\bm{L}^T|=|\bm{I}_n+\bm{L}^T\bm{L}|$,证毕。
+\end{proof}
+\end{frame}
+\begin{frame}
+\begin{lemma}\label{lemma:special}
+$\bm{S}$是一个n-1维的方阵，\[
+\scriptsize{\bm{S}=\left(
+\begin{array}{cccc}
+0&1&\dots&0\\
+1&0&\dots&0\\
+\vdots&\vdots&\ddots&\vdots\\
+0&\dots&1&0\\
+\end{array}\right)}
+\]则$\bm{S}$的n-1个特征值为:
+$\lambda_j=2\cos(\frac{\pi j}{n}),j=1,2,...,n-1$
+\end{lemma}
+\begin{proof}
+首先可以用数学归纳法证明S的特征多项式有递推公式$P_n(\lambda)=\lambda P_{n-1}(\lambda)-P_{n-2}(\lambda)$
+,$P_n(\lambda)$对应n维的S。
+其次证明
+$U_n(\lambda)=\frac{1}{\sqrt{1-(\frac{\lambda}{2})^2}}\sin((n+1)\arccos(\frac{\lambda}{2}))
+$
+适合上面的递推关系式。
+最后证明$U_n(\lambda)$是关于$\lambda$的多项式,而这只需要证明$U_1(\lambda),U_2(\lambda)$是多项式即可。
+\end{proof}
+\end{frame}
+\begin{frame}{节点平均定位误差}
+
+\begin{changemargin}{-1cm}{-1cm}
+$\bm{I}(\bm{P})$的特征多项式为$|(\lambda-a)\bm{I}-b\bm{L}\bm{L}^T|$,通过提取旋转矩阵可以不妨设$u_i=(1,0)^T$
+其中L是2N乘以N的矩阵:
+\[\scriptsize{
+L=\left(
+\begin{array}{ccccc}
+\bm{u}_1&0&\dots&&0\\
+-\bm{u}_1&\bm{u}_2&0&\dots&0\\
+0&-\bm{u}_2&\bm{u}_3&\dots&0\\
+\vdots &\vdots&&\ddots &\vdots\\
+0&\dots&0&-\bm{u}_{N-1}&0\\
+\end{array}
+\right),L^TL=\left(
+\begin{array}{ccccc}
+2&-1&\dots&&0\\
+-1&2&-1&\dots&0\\
+0&-1&2&\dots&0\\
+\vdots &\vdots&&\ddots &\vdots\\
+0&\dots&&0&0\\
+\end{array}
+\right)}
+\]
+根据引理(\ref{lemma:change}),$|(\lambda-a)\bm{I}-bLL^T|=(\lambda-a)^{2n}|\bm{I}_n-\frac{b}{\lambda-a}L^TL|$
+设$\bm{K}_{n-1}$为$L^TL$第n-1阶主子式，则
+$|(\lambda-a)\bm{I}-bLL^T|=(\lambda-a)^{n+1}|(\lambda-a)\bm{I}_{n-1}-b\bm{K}_{n-1}|$
+$\bm{K}_{n-1}=2\bm{I}_{n-1}-\bm{S}$,由引理(\ref{lemma:special})可求出$\bm{I}(\bm{P})$的全部特征值。
+$f(n)=\frac{\Tr(J^{-1})}{n}==\frac{1}{n}(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac{1}{a+2b(1-\cos(\frac{\pi j}{n}))})$
+当$n\to \infty$,根据Riemann积分的定义:$\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\int_0^1 \frac{1}{a+2b(1-cos(\pi x))}dx$
+化为复积分由留数定理可得$\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\frac{1}{\sqrt{a^2+4ab}}$
+\end{changemargin}
+\end{frame}
+\begin{frame}
+
+    \frametitle{等效费舍尔信息矩阵}
+    直接从定义求解上面的问题较繁琐，下面用\textcolor{blue}{等效费舍尔信息矩阵}(Equivalent Fisher Information Matrix)求解该问题:
+
+    %EFIM的思路是说，如果我们只关心场景中单个移动节点的定位误差，则可以通过分块矩阵的思路对总体的FIM进行分解。
+\begin{theorem}
+    设参数$\theta=\binom{\theta_1}{\theta_2}$,费舍尔信息矩阵$I(\theta)=\left(\begin{array}{cc}A&B\\B^T&C\end{array}\right)$,那么\[
+    \mathbb{E}{||\hat{\theta}_1-\theta_1||^2}\geq \Tr\{I_E(\theta_1)^{-1}_{2\times 2}\}\]
+
+    其中$I_E(\theta_1)=A-BC^{-1}B^T$。
+\end{theorem}
+	我们把上面不等式右边的项叫做关于参数$\theta_1$的\textcolor{blue}{定位误差下界}(Spatial Position Error Bound)，由矩阵的相似变换可知,定位误差下界等于$I_E(\theta_1)$的\textcolor{blue}{所有特征值的倒数和}。
+\end{frame}
+\begin{frame}{用等效费舍尔信息矩阵求解节点平均定位误差}
+给定两组数列$\{a_n\}$和$\{b_n\}$我们可以构造
+\begin{changemargin}{-1cm}{-1cm}
+\[
+x_n=a_0+\cfrac{b_1}{a_1+\cfrac{b_2}{a_2+\dots+\cfrac{b_n}{a_n}}},\scriptsize{J=\left(
+\begin{array}{ccccccc}
+2K_1&-K_1&-K_1&0&\dots&&\\
+-K_1&2K_1&0&-K_1&0\dots&\\
+-K_1&0&2K_1&0&-K_1&0&\dots\\
+0&-K_1&0&2K_1&0&\dots&\\
+\vdots&\vdots&&\ddots&\dots&\\
+\end{array}
+\right)}
+\]
+\end{changemargin}
+右边的J是对节点重排后的结果,将线性网络中心的节点放到了矩阵的左上角，求解该问题还需要如下定理:
+\begin{theorem}[fundamental recurrence formulas]
+设$x_n=\frac{h_n}{k_n}$,则有如下递推关系成立:
+\vspace{-3mm}
+\begin{eqnarray}
+h_n=a_nh_{n-1}+b_nh_{n-2}\\
+k_n=a_nk_{n-1}+b_nk_{n-2}
+\end{eqnarray}
+\end{theorem}
+\end{frame}
+\begin{frame}
+为简化计算,对$a\bm{I}+b\bm{J}$提取b,记$\lambda=\frac{a}{b}$
+通过等效费舍尔信息矩阵的公式可以推导出关于矩阵$(\lambda\bm{I}+\bm{J})$左上角的2乘2矩阵的等效费舍尔信息矩阵实际是个对角阵，其中一个对角元为$\lambda$,另一个对角元为可以写成如下连分式的形式:
+\[
+\lambda+2-\cfrac{2}{\lambda+2-\cfrac{1}{\lambda+2-\cfrac{1}{\lambda+2-\dots}}}
+\]
+使用上页的定理，解常系数差分方程得通解为$\frac{h_n}{k_n}=\frac{A_1x_1^n+B_1x_2^n}{A_2x_1^n+B_2x_2^n}$
+递推公式的初始条件是
+\vspace{-2mm}
+\[
+h_0=\lambda+2,k_0=1,h_1=\lambda+2-\frac{2}{\lambda+2},k_1=\lambda+2
+\]
+其中$x_{1,2}=\frac{\lambda+2\pm \sqrt{\lambda^2+4\lambda}}{2}$
+由于$|\frac{x_1}{x_2}|>1$,所以极限$\lim_{n\to \infty}\frac{h_n}{k_n}=\frac{A_1}{A_2}$
+$A_1,A_2$可由初始条件求出，它们的比值是$\sqrt{\lambda^2+4\lambda}$
+\end{frame}
+\section*{总结}
+
+\begin{frame}{总结}
+
+  % Keep the summary *very short*.
+  \begin{itemize}
+  \item
+    已取得的成果
+  \begin{itemize}
+  \item
+    使用复数表示法推导得出非协作定位场景下费舍尔信息矩阵的特征值和特征向量的表达式.
+  \item
+    推导得出秩一矩阵的克罗内克积对N维对称正定矩阵扰动后行列式的表达式
+  \item
+    推导得出二维场景下完全图的邻接矩阵所有特征值，其中使用瑞利商给出了最大 特征值的表达式
+    \item 推导得出二维场景下度为2的图的邻接矩阵的所有特征值；当网络规模趋向无穷大时，求出了所有特征值的倒数和的平均值的极限
+  \end{itemize}
+  \end{itemize}
+  % The following outlook is optional.
+  \vskip0pt plus.5fill
+  \begin{itemize}
+  \item
+    下一步工作计划
+    \begin{itemize}
+    \item
+      考虑二维场景下度为3的图的邻接矩阵的所有特征值的推导
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+
+
