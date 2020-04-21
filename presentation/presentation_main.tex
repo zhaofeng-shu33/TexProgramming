@@ -1,0 +1,402 @@
+\documentclass[notheorems,xetex]{beamer}
+%\documentclass[UTF8]{ctexbeamer}
+\usepackage{xeCJK}%preamble part
+%\usepackage{showframe}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{caption}
+\usepackage{ragged2e}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{color}
+%\usepackage[font=Helv,timeinterval=3]{tdclock}
+\setbeamertemplate{theorems}[numbered]
+\DeclareMathOperator*{\rgmax}{argmax}
+\DeclareMathOperator*{\rgmin}{argmin}
+\DeclareMathOperator{\tr}{tr}
+%\setCJKmainfont{SimSun}[AutoFakeBold=false]
+%\setsansfont{SimSun}
+\setbeamertemplate{frametitle}[default][center]
+\setbeamertemplate{footline}[frame number]
+\setlength{\parindent}{0.8cm}
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}
+\newtheorem{lemma}{引理}
+\newtheorem{definition}{定义}
+\newtheorem{cor}{推论}
+%\newcommand{\transpose}[1]{\ensuremath{#1^{\scriptscriptstyle T}}}
+\usetheme{Warsaw}
+%\usepackage{eforms}%设置倒计时
+% eforms is windows only
+%\begin{insDLJS}{showtime}{Show time}%embedding document level JavaScript, the first required variable is the base name, exports showtime.djs file.
+%ttotal=30;%总时间自己设定, 分钟数
+%stotal=ttotal*60
+%function tClock()
+%{%this.getField("datetime").value = util.printd("hh:MM:ss tt dd/mm/yyyy", new Date());
+%stotal=stotal-1
+%if (stotal>0) {    %%在stotal递减到0之前正常计算所剩时、分、秒
+%hleft=Math.floor(stotal/3600)
+%mleft=Math.floor((stotal - hleft*3600)/60)
+%sleft=stotal - hleft*3600-mleft*60
+%}
+%else{    %%在stotal递减到0及负数时对所剩时、分、秒赋值0
+%hleft=0
+%mleft=0
+%sleft=0
+%}
+%if (hleft>=1){this.getField("datetime").value=hleft+':'+mleft+':'+sleft;}
+%else{this.getField("datetime").value=mleft+':'+sleft;}
+%}
+%var timeout =app.setInterval("tClock()",1000);
+%\end{insDLJS}
+%\newcommand{\timemark}%
+%{\textField[\BC{0.2 0.2 0.7}\BG{0.2 0.2 0.7}%
+% \textFont{TiRo}\textSize{5}\textColor{1 1 0 rg}]{datetime}{6mm}{1bp}}
+%参数可以自己改
+%\setbeamercovered{transparent}
+%\usepackage{times}
+\title{无线网络中定位信息的时空传播机理研究} % (optional, use only with long paper titles)
+\author[赵丰]
+{\quad \hbox to 9em{姓名: \hfil 赵丰}\\ \and \hbox to 9em{指导老师: \hfil 沈渊}\\ \and \hbox to 9em{联合指导老师: \hfil 梁恒}}
+\institute[清华大学] % (optional, but mostly needed)
+{\normalsize\quad
+  清华大学数学科学系
+}
+\date{\the\year 年 \the\month 月 \the\day 日}
+%\AtBeginSubsection[]
+%{
+%  \begin{frame}<beamer>{目录}
+%    \tableofcontents[currentsection,currentsubsection]
+%  \end{frame}
+%}
+\usefonttheme[onlymath]{serif}
+\setbeamercolor{alerted text}{fg=blue}
+\setbeamercolor{normal text}{bg=green!10!white}
+\setbeamercolor{frametitle}{fg=blue!50!black,bg=white}
+\begin{document}
+\frame{\titlepage}
+\date{\hspace{1mm} \timemark}
+\include{presentation_first_part}
+\include{presentation_generalized_continued_fraction}
+\section{小结}
+\begin{frame}{小结}
+在单节点时间协作的定位网络中，
+\begin{itemize}
+\item 直接法可以得到直线情形下费舍尔信息矩阵的全部特征值，获得时间协作数量趋于无穷大时的定位误差下界。
+\item 连分式法可以得到时间终点位置处的信息椭圆，以及增加协作链路后信息量的衰减情况。
+\end{itemize}
+     \begin{figure}
+          \centering
+          \includegraphics[height=4cm]{cooperative_single_temporal.eps}
+          \caption*{时间协作定位图示}
+     \end{figure}
+\end{frame}
+\appendix
+\begin{frame}[noframenumbering]
+直接求解该问题需要如下两个引理:
+\begin{lemma}\label{lemma:change}
+设L是$m\times n$的矩阵，$a,\epsilon > 0$则
+\begin{equation*}
+|a\bm{I}_m+\epsilon \bm{L}\bm{L}^{\textrm{T}}|=a^m|\bm{I}_n+\frac{\epsilon}{a} \bm{L}^{\textrm{T}}\bm{L}|
+\end{equation*}
+\end{lemma}
+\begin{proof}
+不妨设$a=\epsilon=1$,
+考虑到
+\[
+\left(\begin{array}{cc}
+\bm{I}_n+\bm{L}^{\textrm{T}}\bm{L}&\bm{0}\\
+\bm{L}&\bm{I}_m\\
+\end{array}\right)\sim\left(\begin{array}{cc}
+\bm{I}_n&-\bm{L}^{\textrm{T}}\\
+\bm{L}&\bm{I}_m\\
+\end{array}\right)\sim\left(\begin{array}{cc}
+\bm{I}_n&-\bm{L}^{\textrm{T}}\\
+0&\bm{I}_m+\bm{L}\bm{L}^{\textrm{T}}\\
+\end{array}\right)
+\]
+其中$\sim$表示矩阵相抵，两边取行列式即得$|\bm{I}_m+\bm{L}\bm{L}^{\textrm{T}}|=|\bm{I}_n+\bm{L}^{\textrm{T}}\bm{L}|$。
+\end{proof}
+\end{frame}
+\begin{frame}[noframenumbering]
+\begin{lemma}\label{lemma:special}
+$\bm{S}_{n-1}$是一个n-1维的方阵，
+$\bm{S}=\left(
+\begin{array}{cccc}
+0&1&\dots&0\\
+1&0&\dots&0\\
+\vdots&\vdots&\ddots&\vdots\\
+0&\dots&1&0\\
+\end{array}\right).$
+则$\bm{S}_{n-1}$的n-1个特征值为:
+$\lambda_j=2\cos(\frac{\pi j}{n}),j=1,2,...,n-1$
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item 用数学归纳法证明$S_n$的特征多项式有递推公式$P_n(\lambda)=\lambda P_{n-1}(\lambda)-P_{n-2}(\lambda)$
+  \item $U_n(\lambda)=\frac{1}{\sqrt{1-(\frac{\lambda}{2})^2}}\sin((n+1)\arccos(\frac{\lambda}{2}))$适合上面的递推关系式。
+  \item $U_1(\lambda),U_2(\lambda)$是多项式,所以$U_n(\lambda)$是关于$\lambda$的多项式
+\end{enumerate}
+\end{proof}
+\end{frame}
+\begin{frame}[noframenumbering]{直接法}
+不妨设节点沿x轴运动,费舍尔信息矩阵$I(\bm{P})$化简为:
+\begin{equation*}
+I(\bm{P})=a\bm{I}+b \left(
+\begin{array}{ccccc}
+\bm{e}_1\bm{e}_1^{\textrm{T}}&-\bm{e}_1\bm{e}_1^{\textrm{T}}&\dots&&0\\
+-\bm{e}_1\bm{e}_1^{\textrm{T}}&2\bm{e}_1\bm{e}_1^{\textrm{T}}&-\bm{e}_1\bm{e}_1^{\textrm{T}}&\dots&0\\
+\vdots &\vdots&&\ddots &\vdots\\
+0&&\dots&-\bm{e}_1\bm{e}_1^{\textrm{T}}&\bm{e}_1\bm{e}_1^{\textrm{T}}\\
+\end{array}
+\right)
+\end{equation*}
+其中$\bm{e}_1=\binom{1}{0}$
+\end{frame}
+\begin{frame}[noframenumbering]
+$I(\bm{P})=a\bm{I}+b \bm{L}\bm{L}^{\textrm{T}}$,其中\\
+
+\bigskip
+$\bm{e}_1=\binom{1}{0}$且
+$\bm{L}=\left(\begin{array}{ccccc}
+\bm{e}_1&0&\dots&&0\\
+-\bm{e}_1&\bm{e}_1&0&\dots&0\\
+\vdots &\vdots&&\ddots &\vdots\\
+0&&\dots&-\bm{e}_1&0\\
+\end{array}
+\right)_{2n\times n}$
+\bigskip
+
+$\bm{L}$的最后一列全为零。
+\end{frame}
+\begin{frame}[noframenumbering]{$I(\bm{P})=a\bm{I}+b \bm{L}\bm{L}^{\textrm{T}}$}
+$\bm{I}(\bm{P})$的特征多项式为$|(\lambda-a)\bm{I}-b\bm{L}\bm{L}^{\textrm{T}}|$
+\pause
+
+根据引理(\ref{lemma:change}),$|(\lambda-a)\bm{I}-bLL^{\textrm{T}}|=(\lambda-a)^{2n}|\bm{I}_n-\frac{b}{\lambda-a}L^{\textrm{T}}L|$
+\[L^{\textrm{T}}L=\left(
+\begin{array}{ccccc}
+2&-1&\dots&&0\\
+-1&2&-1&\dots&0\\
+0&-1&2&\dots&0\\
+\vdots &\vdots&&\ddots &\vdots\\
+0&\dots&&0&0\\
+\end{array}
+\right).
+\]
+\pause
+设$\bm{K}_{n-1}$为$L^{\textrm{T}}L$第n-1阶主子式，则
+$|(\lambda-a)\bm{I}-bLL^{\textrm{T}}|=(\lambda-a)^{n+1}|(\lambda-a)\bm{I}_{n-1}-b\bm{K}_{n-1}|$
+\end{frame}
+\begin{frame}[noframenumbering]
+$\bm{K}_{n-1}=2\bm{I}_{n-1}-\bm{S}$,由引理(\ref{lemma:special})可求出$\bm{K}_{n-1}$的全部特征值。
+\pause
+\[
+f(n):=\frac{\tr(\bm{I}(\bm{P})^{-1})}{n}=\frac{1}{n}\left(\frac{n+1}{a}+\sum_{j=1}^{n-1}\frac{1}{a+2b(1-\cos(\frac{\pi j}{n}))}\right)
+\]
+当$n\to \infty$,根据Riemann积分的定义:
+\[
+\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\int_0^1 \frac{1}{a+2b(1-\cos(\pi x))}dx
+\]
+化为复积分由留数定理可得
+\[
+\lim_{n\rightarrow \infty}f(n)=\frac{1}{a}+\frac{1}{\sqrt{a^2+4ab}}.
+\]
+\end{frame}
+\begin{frame}[noframenumbering]{连分式法推导过程}
+提取公因子后，下面用连分式法研究$\bm{I}(\bm{P})=\lambda \bm{I}+\bm{J}$的结构。
+\pause
+$t_{i}$时刻的位置信息椭圆为
+\[
+\bm{e}_{i}^{\textrm{T}}(\bm{I}(\bm{P}))^{-1}\bm{e}_{i}
+\]
+其中
+\begin{equation*}
+\bm{e}_i=(\bm{0},\dots,\underbrace{\bm{I}_2}_{i\text{-th item}},\dots,\bm{0})^{\textrm{T}}.
+\end{equation*}
+\end{frame}
+\begin{frame}[noframenumbering]
+$\bm{I}(\bm{P})$可以简写为:
+\begin{equation*}
+\bm{I}(\bm{P})=\begin{pmatrix}
+                 \bm{B}_1 & \bm{A}_2 & \bm{0} & \dots & \bm{0} \\
+                 \bm{A}_2 & \bm{B}_2 & \bm{A}_3 & \dots & \bm{0} \\
+                 \vdots & \vdots & \vdots & \ddots & \vdots \\
+                 \bm{0} & \dots & \bm{0} & \bm{A}_{N_a} & \bm{B}_{N_a}
+               \end{pmatrix}.
+\end{equation*}
+
+$\bm{I}(\bm{P})$可以做LU分解如下:
+\pause
+\begin{equation*}\label{eq:LU}
+  \bm{I}(\bm{P})=\begin{pmatrix}
+                 \bm{I}_2 & \bm{0} & \bm{0} & \dots & \bm{0} \\
+                 \bm{L}_2 & \bm{I}_2 & \bm{0} & \dots & \bm{0} \\
+                 \vdots & \vdots & \vdots & \ddots & \vdots \\
+                 \bm{0} & \dots & \bm{0} & \bm{L}_{N_a} & \bm{I}_{2}
+               \end{pmatrix}\begin{pmatrix}
+                 \bm{U}_1 & \bm{A}_2 & \bm{0} & \dots & \bm{0} \\
+                 \bm{0} & \bm{U}_2 & \bm{A}_3 & \dots & \bm{0} \\
+                 \vdots & \vdots & \vdots & \ddots & \vdots \\
+                 \bm{0} & \dots & \bm{0} & \bm{0} & \bm{U}_{N_a}
+               \end{pmatrix}.
+\end{equation*}
+\end{frame}
+\begin{frame}[noframenumbering]
+$\bm{U}_i$满足如下递推关系：
+\begin{equation*}
+\begin{cases}
+  \bm{U}_1 &= \bm{B}_1 \\
+  \bm{U}_i &= \bm{B}_i-\bm{A}_i\bm{U}_{i-1}^{-1}\bm{A}_i,i\geq 2.
+\end{cases}
+\end{equation*}
+
+其中
+\begin{equation*}
+\begin{cases}
+  \bm{A}_i &= -\bm{u}_i\bm{u}_i^{\textrm{T}} \\
+  \bm{B}_i &=\lambda\bm{I}_2+\bm{u}_{i-1}\bm{u}_{i-1}^{\textrm{T}}+\bm{u}_i\bm{u}_i^{\textrm{T}}, 2 \leq i \leq N_a-1.
+\end{cases}
+\end{equation*}
+\end{frame}
+\begin{frame}[noframenumbering]
+\begin{equation*}\label{eq:LU}
+  \bm{I}(\bm{P})=\begin{pmatrix}
+                 \bm{I}_2 & \bm{0} & \bm{0} & \dots & \bm{0} \\
+                 \bm{L}_2 & \bm{I}_2 & \bm{0} & \dots & \bm{0} \\
+                 \vdots & \vdots & \vdots & \ddots & \vdots \\
+                 \bm{0} & \dots & \bm{0} & \bm{L}_{N_a} & \bm{I}_{2}
+               \end{pmatrix}\begin{pmatrix}
+                 \bm{U}_1 & \bm{A}_2 & \bm{0} & \dots & \bm{0} \\
+                 \bm{0} & \bm{U}_2 & \bm{A}_3 & \dots & \bm{0} \\
+                 \vdots & \vdots & \vdots & \ddots & \vdots \\
+                 \bm{0} & \dots & \bm{0} & \bm{0} & \bm{U}_{N_a}
+               \end{pmatrix}.
+\end{equation*}
+
+从上式可以求出
+\begin{equation*}\label{eq:thomas_final}
+\bm{e}_{N_a}^{\textrm{T}}(\bm{I}(\bm{P}))^{-1}\bm{e}_{N_a}=U_{N_a}^{-1}.
+\end{equation*}
+\pause
+
+关于$U_{N_a}$的结构我们有结论，它的一个特征值是$\lambda$,另一个特征值可以用连分式表示出来。
+\end{frame}
+\begin{frame}[noframenumbering]
+设$\bm{u}_i=(\cos\theta_i,\sin\theta_i)^{\textrm{T}}$
+\begin{equation*}
+\begin{split}
+T_{i-1} =& \lambda + \frac{1}{1+\frac{\sin^2\theta_i}{\lambda}+\frac{\cos^2\theta_i}{T_i}},2\leq i\leq N_a-1\\
+T_{N_a-1}  =& \lambda+\frac{1}{1+1/\lambda}
+\end{split}
+\end{equation*}
+
+$T_1$就是$U_{N_a}$的另一个特征值。
+\end{frame}
+\begin{frame}[noframenumbering]{连分式与Pad\'e逼近}
+可以用归纳法得到
+\[
+[\lambda,1,\underbrace{\lambda,1}_{\text{$n$ item}}]=\frac{P_{n+1}(\lambda)}{Q_n(\lambda)}
+\]
+其中$P_{n+1}(\lambda),Q_n(\lambda)$是关于$\lambda$的n+1和n次多项式。
+\end{frame}
+\begin{frame}[noframenumbering]
+有理分式逼近(Pad\'{e}逼近)理论指出对于光滑函数$f(x)$，可构造有理分式:
+\[
+R_{n+m}(x)=\frac{P_n(x)}{Q_m(x)}
+\]
+来逼近$f(x)$，使得$R_{n+m}(x)$与$f(x)$在$x=0$处直到$n+m$次导数相等。
+\pause
+
+
+Taylor级数是$m=0$的情形
+\pause
+
+函数的有限连分式展开在某些情况下是$|n-m|=1$的情形
+\begin{flushright}
+\hspace{ \stretch{1} }\fbox{\parbox[b][5em][t]{0.4\textwidth}{Pad\'{e} approximation and continued fractions, Applied Numerical Mathematics, 2010}}
+\end{flushright}
+\end{frame}
+\begin{frame}[noframenumbering]
+下面我们考虑$m+n$相等时不同的展开方式对$f(\lambda)=\frac{\lambda+\sqrt{4\lambda+\lambda^2}}{2}$逼近的效果情况，
+\pause
+
+由于$f(\lambda)$在$\lambda=0$处有奇性（一阶导数不存在），我们考虑其在复平面关于$\infty$的Taylor展开式，通过令$x=1/\lambda$不难得到
+\begin{align}\notag
+f(\lambda)=&\frac{2}{\sqrt{1+4x}-1}\\
+=&\frac{1}{x-x^2+2x^3-5x^4+14x^5+\dots}
+\end{align}
+
+由于$\sqrt{1+4x}$收敛域为$|4x|<1$可得$|\lambda|>4$,可见Taylor展开对$\lambda$的取值有限制。
+\end{frame}
+\begin{frame}[noframenumbering]
+\begin{figure}
+\centering
+\caption*{取n+m=5对$f(\lambda)$的有理逼近图示}
+\includegraphics[width=300pt]{pade.eps}
+\end{figure}
+\begin{itemize}
+  \item Taylor展开逼近在$\lambda<4$时偏离较大
+  \item pade41收敛域大于Taylor展开，但在$\lambda$较小处仍然不收敛
+  \item 连分式对应的pade32对于$\lambda>0$逐点收敛到$f(\lambda)$
+\end{itemize}
+\end{frame}
+
+%\subsection{正方形网络和正六边形网络}
+%\begin{frame}[noframenumbering]
+%在正方形网络中，由于正交性，定位效果并不理想。
+%  \begin{columns}[T] % contents are top vertically aligned
+%     \begin{column}[T]{6cm}
+%     右图中$\bm{p}_3$的位置信息要想被$\bm{p}_1$利用提高定位精度，是通过改善$\bm{p}_2$的定位精度间接实现的。
+%     \pause
+%但是$\bm{p}_3$对$\bm{p}_2$位置精度的贡献的方向恰好与$\bm{p}_2$对$\bm{p}_1$位置精度的贡献的方向垂直，因此$\bm{p}_3$对$\bm{p}_1$定位精度的提高没有贡献。
+%     \end{column}
+%     \begin{column}[T]{5cm} % alternative top-align that's better for graphics
+%          \includegraphics[height=4cm]{orthogonal.eps}
+%     \end{column}
+%     \end{columns}
+%\end{frame}
+%\begin{frame}[noframenumbering]
+%在正六边形网络中，类似线性网络中的直接法，
+%通过采用节点分层技术可以得到网络规模趋向于无穷大时的节点平均定位误差下界为
+%  \begin{equation}
+%  \lambda+\frac{3}{2}-\cfrac{3/2}{\lambda+\frac{3}{2}-\cfrac{1/2}{\lambda+3/2-\dots}}=\sqrt{\lambda^2+3\lambda+\frac{1}{4}}-\frac{1}{\lambda+\frac{3}{2}+\sqrt{\lambda^2+3\lambda+\frac{1}{4}}}.
+%  \end{equation}
+%\end{frame}
+%\begin{frame}[noframenumbering]
+%  在数学方法方面，本文主要的成果如下:
+%  \begin{itemize}
+%  \item
+%    使用复数表示法推导得出非协作定位场景下费舍尔信息矩阵的特征值和特征向量的表达式。
+%  \item
+%    推导得出秩一矩阵的克罗内克积对N维对称正定矩阵扰动后行列式的表达式。
+%  \item
+%    推导得出二维场景下特殊完全图的邻接矩阵所有特征值，其中使用瑞利商给出了最大 特征值的表达式。
+%  \item 推导得出二维场景下特殊度为2的图的邻接矩阵的所有特征值；当网络规模趋向无穷大时，求出了所有特征值的倒数和的平均值的极限。
+%  \item 使用连分式推导得出形如$\lambda \bm{I}+\bm{J}$的对称正定矩阵$\bm{A}$确定的$\bm{A}^{-1}_{1\times2,1\times2}$的两个特征值；分析得出了决定特征值的连分式的序列指数收敛的特性，并做出适当的推广。
+%  \end{itemize}
+%
+%\end{frame}
+%\begin{frame}[noframenumbering]
+% \frametitle{参考文献}
+% \tiny
+% \begin{itemize}
+%   \item Kegen Yu I S, Guo Y J. Ground-Based Wireless Positioning. John Wiley and Sons, Ltd,2009
+%   \item L J, S L, G V. Development and experimental validation of an adaptive extended kalman filter for the localization of mobile robots. IEEE Transactions, 1999, 15(2):219–229
+%   \item Shen Y, Win M Z, Wymeersch H. Fundamental limits of wideband localization—part
+%i: A general framework. IEEE TRANSACTIONS ON INFORMATION THEORY, 2010,
+%56(10):4956–4980
+%   \item 杨思怡. 协作定位网络的信息耦合机理 [D]. 北京: 清华大学, 2016
+%   \item 姚慕生. 高等代数学. 上海: 复旦大学出版社, 2003
+%   \item MazuelasS,ShenY,WinMZ. Spatio-temporalinformationcouplingincooperativenetwork
+%navigation. Globecom Communication Theory Symposium, 2012. 2403–2407
+%   \item 关治, 陆金甫. 数值分析基础. 北京: 高等教育出版社, 2010: 52–56
+%   \item Hammond W F. Continued fractions and the euclidean algorithm. Lecture notes, University
+%at Albany, 1997
+% \end{itemize}
+%\end{frame}
+
+\end{document}
+
+
