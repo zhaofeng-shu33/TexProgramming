@@ -1,4 +1,4 @@
-mkdir -p build
+mkdir -p build/data
 xelatex -output-directory=build myMain.tex
 cp -r ref build/
 bibtex myMain
